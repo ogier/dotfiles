@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Source global definitions
+if [ -f /etc/bash_profile ]; then
+	. /etc/bash_profile
+fi
+
+# Source bashrc
+if [ -f ~/.bashrc ]; then
+	. ~/.bashrc
+fi

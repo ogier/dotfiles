@@ -1,0 +1,109 @@
+" use pathogen to keep vim scripts bundled
+filetype off
+call pathogen#runtime_append_all_bundles()
+filetype plugin indent on
+
+set nocompatible
+
+" Security
+set modelines=0
+
+" Tabs/spaces
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+
+" Basic options
+set encoding=utf-8
+set scrolloff=3
+set autoindent
+set showmode
+set showcmd
+set hidden
+set wildmenu
+set wildmode=list:longest
+set visualbell
+set cursorline
+set ttyfast
+set ruler
+set backspace=indent,eol,start
+"set relativenumber
+"set laststatus=2
+"set undofile
+
+" Backups
+set backupdir=~/.vim/tmp/backup// " backups
+set directory=~/.vim/tmp/swap//   " swap files
+set backup                        " enable backups
+
+" Leader
+let mapleader = ","
+
+" Searching
+nnoremap / /\v
+vnoremap / /\v
+set ignorecase
+set smartcase
+set incsearch
+set showmatch
+set hlsearch
+set gdefault
+map <leader><space> :noh<cr>
+runtime macros/matchit.vim
+nmap <tab> %
+vmap <tab> %
+
+" Color scheme (terminal)
+syntax on
+set background=dark
+set t_Co=256
+colorscheme molokai
+
+" NERD Tree
+map <F2> :NERDTreeToggle<cr>
+let NERDTreeIgnore=['.vim$', '\~$', '.*\.pyc$', 'pip-log\.txt$']
+
+" Use the damn hjkl keys
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
+nnoremap <right> <nop>
+
+" Easy buffer navigation
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+map <leader>w <C-w>v<C-w>l
+
+" Nice pasting
+set pastetoggle=<leader>p
+
+" Various syntax stuff
+au BufNewFile,BufRead *.less set filetype=less
+au BufRead,BufNewFile *.scss set filetype=scss
+
+au BufNewFile,BufRead *.m*down set filetype=markdown
+au BufNewFile,BufRead *.m*down nnoremap <leader>1 yypVr=
+au BufNewFile,BufRead *.m*down nnoremap <leader>2 yypVr-
+au BufNewFile,BufRead *.m*down nnoremap <leader>3 I### <ESC>
+
+" Ack
+map <leader>a :Ack 
+
+" Yankring
+nnoremap <silent> <F3> :YRShow<cr>
+nnoremap <silent> <leader>y :YRShow<cr>
+
+" Faster Esc
+inoremap jj <ESC>
+
+" Edit .vimrc
+nmap <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<cr>
+
+" Sudo to write
+cmap w!! w !sudo tee % >/dev/null
+
+" Shouldn't need shift
+nnoremap ; :
