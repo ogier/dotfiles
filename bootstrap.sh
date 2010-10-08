@@ -13,3 +13,10 @@ ln -s ~/dotfiles/home/bashrc ~/.bashrc
 rm ~/.vimrc
 
 ln -s ~/dotfiles/home/vimrc ~/.vimrc
+
+# git
+
+rm ~/.gitconfig
+
+ln -s ~/dotfiles/home/gitconfig ~/.gitconfig
+
