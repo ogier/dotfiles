@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/sh
 
 # bash
 
@@ -17,6 +17,7 @@ ln -s ~/dotfiles/home/vimrc ~/.vimrc
 # git
 
 rm ~/.gitconfig
+rm ~/.gitignore
 
 ln -s ~/dotfiles/home/gitconfig ~/.gitconfig
-
+ln -s ~/dotfiles/home/gitignore ~/.gitignore

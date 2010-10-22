@@ -1,3 +1,5 @@
 [user]
 	name = Alex Ogier
 	email = alex.ogier@gmail.com
+[core]
+	excludesfile = /home/aogier/.gitignore
