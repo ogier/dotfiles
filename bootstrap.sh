@@ -1,28 +1,53 @@
 #!/bin/sh
 
-link_file ()
+dotfiles=~/dotfiles/home
+
+link_absolute ()
 {
-    if [ -f ~/$1 ]; then
-        read -p "Clobber ~/$1 ? " yn
-        case $yn in
-            [Yy]* ) rm ~/$1; break;;
-            * ) echo "Skipping $1"; return;;
-        esac
+    # if theres something there already
+    if [ -f $1 -o -d $1 ]; then
+        # if it's not a symlink already, confirm
+        if [ ! -h $1 ]; then
+            read -p "Clobber $1 ? " yn
+            case $yn in
+                [Yy]* ) break;;
+                * ) echo "Skipping $1"; return;;
+            esac
+        fi
+        rm -r $1
     fi
-    echo "~/$1 -> ~/dotfiles/home/$2"
-    ln -s ~/dotfiles/home/$2 ~/$1
+    ln -v -s $2 $1
 }
+
+link_dotfile ()
+{
+    link_absolute ~/.$1 $dotfiles/$1
+}
+
+link_children ()
+{
+    mkdir -v -p $1
+    for child in $2/*; do
+        link_absolute $1/`basename $child` $child
+    done
+}
+
 
 # bash
 
-link_file .bash_profile bash_profile
-link_file .bashrc bashrc
+link_dotfile bash_profile
+link_dotfile bashrc
 
 # vim
 
-link_file .vimrc vimrc
+link_dotfile vimrc
+mkdir -v -p ~/.vim/tmp/backup//
+mkdir -v -p ~/.vim/tmp/swap//
+for dir in ~/dotfiles/home/vim/*; do
+    link_children ~/.vim/`basename $dir` $dir
+done
 
 # git
 
-link_file .gitconfig gitconfig
-link_file .gitignore gitignore
+link_dotfile gitconfig
+link_dotfile gitignore
