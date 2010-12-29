@@ -70,3 +70,6 @@ venv_cd () {
     cd "$@" && has_virtualenv
 }
 alias cd="venv_cd"
+
+# Start rvm when possible
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
