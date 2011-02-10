@@ -90,9 +90,9 @@ au BufNewFile,BufRead *.m*down nnoremap <leader>2 yypVr-
 au BufNewFile,BufRead *.m*down nnoremap <leader>3 I### <ESC>
 
 " Filetype indent options
-au BufNewFile,BufRead *.ml set tabstop=2
-au BufNewFile,BufRead *.ml set shiftwidth=2
-au BufNewFile,BufRead *.ml set softtabstop=2
+au BufNewFile,BufRead *.{s,}ml set tabstop=2
+au BufNewFile,BufRead *.{s,}ml set shiftwidth=2
+au BufNewFile,BufRead *.{s,}ml set softtabstop=2
 
 " Ack
 map <leader>a :Ack 
