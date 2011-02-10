@@ -73,3 +73,9 @@ alias cd="venv_cd"
 
 # Start rvm when possible
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
+
+# Add readline support to programs
+add_readline () {
+    socat READLINE EXEC:$1
+}
+alias rl="add_readline"
