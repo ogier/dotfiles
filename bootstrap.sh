@@ -51,3 +51,7 @@ done
 
 link_dotfile gitconfig
 link_dotfile gitignore
+
+# hg
+
+link_dotfile hgrc
