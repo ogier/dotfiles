@@ -1,6 +1,9 @@
 setopt prompt_subst
 autoload -Uz vcs_info
 
+# hack to grab bash aliases
+source ~/.bashrc
+
 local return_code="%(?..%B%F{red}%? ↵%f%b)"
 # red if we are superuser
 local userhost="%(!.%F{red}.%F{green}%n@)%m%f"
