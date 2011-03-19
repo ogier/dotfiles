@@ -103,6 +103,10 @@ map <leader>a :Ack
 nnoremap <silent> <F3> :YRShow<cr>
 nnoremap <silent> <leader>y :YRShow<cr>
 
+" LatexSuite
+let g:Tex_DefaultTargetFormat='pdf'
+let g:Imap_UsePlaceHolders=0
+
 " Faster Esc
 inoremap jj <ESC>
 
