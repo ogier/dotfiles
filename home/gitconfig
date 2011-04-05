@@ -1,5 +1,27 @@
 [user]
 	name = Alex Ogier
 	email = alex.ogier@gmail.com
+
+[alias]
+    l = log --oneline --decorate
+
 [core]
 	excludesfile = /home/aogier/.gitignore
+	whitespace = trailing-space,space-before-tab
+
+[color]
+	ui = auto
+
+[color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = cyan
+
+[diff]
+	renames = copies
