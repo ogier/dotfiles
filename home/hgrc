@@ -1,2 +1,5 @@
 [ui]
 username = Alex Ogier <alex.ogier@gmail.com>
+
+[web]
+cacerts = /etc/ssl/certs/ca-certificates.crt
