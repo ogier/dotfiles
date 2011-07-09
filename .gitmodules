@@ -19,3 +19,6 @@
 [submodule "home/vim/bundle/vim-yankring"]
 	path = home/vim/bundle/vim-yankring
 	url = http://github.com/chrismetcalf/vim-yankring
+[submodule "home/vim/bundle/SearchComplete"]
+	path = home/vim/bundle/SearchComplete
+	url = http://github.com/vim-scripts/SearchComplete
