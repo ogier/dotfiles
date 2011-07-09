@@ -22,3 +22,6 @@
 [submodule "home/vim/bundle/SearchComplete"]
 	path = home/vim/bundle/SearchComplete
 	url = http://github.com/vim-scripts/SearchComplete
+[submodule "home/vim/bundle/NERD_commenter"]
+	path = home/vim/bundle/NERD_commenter
+	url = http://github.com/scrooloose/nerdcommenter
