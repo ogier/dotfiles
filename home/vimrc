@@ -97,6 +97,9 @@ au BufNewFile,BufRead *.{s,}ml set softtabstop=2
 
 au BufNewFile,BufRead *.go set noexpandtab
 
+" TagList
+nmap <leader>tl :TlistToggle<cr>
+
 " Ack
 map <leader>a :Ack 
 
