@@ -4,3 +4,6 @@
 [submodule "home/vim/bundle/vim-surround"]
 	path = home/vim/bundle/vim-surround
 	url = http://github.com/tpope/vim-surround
+[submodule "home/vim/bundle/snipmate.vim"]
+	path = home/vim/bundle/snipmate.vim
+	url = http://github.com/msanders/snipmate.vim
