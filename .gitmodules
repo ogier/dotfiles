@@ -7,3 +7,6 @@
 [submodule "home/vim/bundle/snipmate.vim"]
 	path = home/vim/bundle/snipmate.vim
 	url = http://github.com/msanders/snipmate.vim
+[submodule "home/vim/bundle/vim-scmdiff/plugin"]
+	path = home/vim/bundle/vim-scmdiff/plugin
+	url = http://github.com/ghewgill/vim-scmdiff
