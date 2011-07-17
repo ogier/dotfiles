@@ -81,8 +81,19 @@ map <leader>w <C-w>v<C-w>l
 " Nice pasting
 set pastetoggle=<leader>p
 
-" Various syntax stuff
-au BufNewFile,BufRead *.less set filetype=less
+" Guess the tab format of the current file
+function! GuessExpandTab()
+   let nspaces = len(filter(getline(0, "$"), 'match(v:val, " ") == 0'))
+   let ntabs = len(filter(getline(0, "$"), 'match(v:val, "\t") == 0'))
+   if ntabs > nspaces
+       set noexpandtab
+   endif
+endfunction
+
+" Guess tab format here, override after
+au BufRead * call GuessExpandTab()
+
+au BufRead,BufNewFile *.less set filetype=css
 au BufRead,BufNewFile *.scss set filetype=scss
 
 au BufNewFile,BufRead *.m*down set filetype=markdown
@@ -90,12 +101,24 @@ au BufNewFile,BufRead *.m*down nnoremap <leader>1 yypVr=
 au BufNewFile,BufRead *.m*down nnoremap <leader>2 yypVr-
 au BufNewFile,BufRead *.m*down nnoremap <leader>3 I### <ESC>
 
-" Filetype indent options
 au BufNewFile,BufRead *.{s,}ml set tabstop=2
 au BufNewFile,BufRead *.{s,}ml set shiftwidth=2
 au BufNewFile,BufRead *.{s,}ml set softtabstop=2
 
 au BufNewFile,BufRead *.go set noexpandtab
+
+highlight ExtraWhitespace ctermbg=darkgrey guibg=darkgrey
+function! SetExtraWhitespace()
+       if &expandtab
+               match ExtraWhitespace /^\t+\|\s\+$/
+       else
+               match ExtraWhitespace /^ +\|\s\+$/
+       endif
+endfunction
+au BufWinEnter * call SetExtraWhitespace()
+au BufWinLeave * call clearmatches()
+au InsertEnter * call clearmatches()
+au InsertLeave * call SetExtraWhitespace()
 
 " TagList
 nmap <leader>t :TlistToggle<cr>
