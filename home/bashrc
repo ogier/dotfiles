@@ -82,6 +82,9 @@ alias cd="venv_cd"
 # Start rvm when possible
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
+# Set up a sane google go environment
+export GOPATH=$HOME/go
+
 # Add readline support to programs
 add_readline () {
     socat READLINE EXEC:$1
