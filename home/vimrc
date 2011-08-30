@@ -138,3 +138,4 @@ cmap w!! w !sudo tee % >/dev/null
 
 " Shouldn't need shift
 nnoremap ; :
+nnoremap , ;
