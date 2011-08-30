@@ -126,10 +126,6 @@ nmap <leader>t :TlistToggle<cr>
 " Ack
 map <leader>a :Ack 
 
-" Yankring
-nnoremap <silent> <F3> :YRShow<cr>
-nnoremap <silent> <leader>y :YRShow<cr>
-
 " LatexSuite
 let g:Tex_DefaultTargetFormat='pdf'
 let g:Imap_UsePlaceHolders=0
