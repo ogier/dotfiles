@@ -38,9 +38,6 @@ set backupdir=~/.vim/tmp/backup// " backups
 set directory=~/.vim/tmp/swap//   " swap files
 set backup                        " enable backups
 
-" Leader
-let mapleader = ","
-
 " Searching
 nnoremap / /\v
 vnoremap / /\v
@@ -124,7 +121,7 @@ au InsertLeave * call SetExtraWhitespace()
 nmap <leader>t :TlistToggle<cr>
 
 " Ack
-map <leader>a :Ack 
+map <leader>a :Ack
 
 " LatexSuite
 let g:Tex_DefaultTargetFormat='pdf'
