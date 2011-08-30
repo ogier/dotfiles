@@ -131,7 +131,7 @@ let g:Imap_UsePlaceHolders=0
 inoremap jj <ESC>
 
 " Edit .vimrc
-nmap <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<cr>
+nmap <leader>ev :e $MYVIMRC<cr>
 
 " Sudo to write
 cmap w!! w !sudo tee % >/dev/null
