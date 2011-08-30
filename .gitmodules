@@ -22,3 +22,6 @@
 [submodule "home/vim/bundle/NERD_commenter"]
 	path = home/vim/bundle/NERD_commenter
 	url = http://github.com/scrooloose/nerdcommenter
+[submodule "home/vim/bundle/ack.vim"]
+	path = home/vim/bundle/ack.vim
+	url = http://github.com/mileszs/ack.vim
