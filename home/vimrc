@@ -38,9 +38,6 @@ set backupdir=~/.vim/tmp/backup// " backups
 set directory=~/.vim/tmp/swap//   " swap files
 set backup                        " enable backups
 
-" Leader
-let mapleader = ","
-
 " Searching
 nnoremap / /\v
 vnoremap / /\v
@@ -124,11 +121,7 @@ au InsertLeave * call SetExtraWhitespace()
 nmap <leader>t :TlistToggle<cr>
 
 " Ack
-map <leader>a :Ack 
-
-" Yankring
-nnoremap <silent> <F3> :YRShow<cr>
-nnoremap <silent> <leader>y :YRShow<cr>
+map <leader>a :Ack
 
 " LatexSuite
 let g:Tex_DefaultTargetFormat='pdf'
@@ -138,10 +131,11 @@ let g:Imap_UsePlaceHolders=0
 inoremap jj <ESC>
 
 " Edit .vimrc
-nmap <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<cr>
+nmap <leader>ev :e $MYVIMRC<cr>
 
 " Sudo to write
 cmap w!! w !sudo tee % >/dev/null
 
 " Shouldn't need shift
 nnoremap ; :
+nnoremap , ;

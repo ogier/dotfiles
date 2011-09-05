@@ -16,12 +16,15 @@
 [submodule "home/vim/bundle/taglist.vim"]
 	path = home/vim/bundle/taglist.vim
 	url = http://github.com/vim-scripts/taglist.vim
-[submodule "home/vim/bundle/vim-yankring"]
-	path = home/vim/bundle/vim-yankring
-	url = http://github.com/chrismetcalf/vim-yankring
 [submodule "home/vim/bundle/SearchComplete"]
 	path = home/vim/bundle/SearchComplete
 	url = http://github.com/vim-scripts/SearchComplete
 [submodule "home/vim/bundle/NERD_commenter"]
 	path = home/vim/bundle/NERD_commenter
 	url = http://github.com/scrooloose/nerdcommenter
+[submodule "home/vim/bundle/ack.vim"]
+	path = home/vim/bundle/ack.vim
+	url = http://github.com/mileszs/ack.vim
+[submodule "home/vim/bundle/nerdtree"]
+	path = home/vim/bundle/nerdtree
+	url = http://github.com/scrooloose/nerdtree
