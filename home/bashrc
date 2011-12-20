@@ -84,7 +84,8 @@ alias cd="venv_cd"
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
 # Set up a sane google go environment
-export GOPATH=$HOME/go
+export GOROOT=$HOME/go
+export PATH=$GOROOT/bin:$PATH
 
 # Add readline support to programs
 add_readline () {
