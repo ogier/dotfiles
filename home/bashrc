@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
 # Source global definitions
-if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
-fi
+[[ -f /etc/bashrc ]] && . /etc/bashrc
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
