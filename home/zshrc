@@ -8,7 +8,7 @@ local return_code="%(?..%B%F{red}%? ↵%f%b)"
 # red if we are superuser
 local userhost="%(!.%F{red}.%F{green}%n@)%m%f"
 # basename in bold
-local directory='%F{cyan}${${$(print -P "%~"):h}:#.}%2(~./.)%B${$(print -P "%~"):t}%b%f'
+local directory='%F{cyan}${$(print -P "%~")/%${$(print -P "%~"):t}/}%B${$(print -P "%~"):t}%b%f'
 local vcs='${vcs_info_msg_0_}'
 
 zstyle ':vcs_info:*' check-for-changes true
