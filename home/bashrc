@@ -83,6 +83,12 @@ alias cd="venv_cd"
 # Start rvm when possible
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
+# Start rbenv
+if [ -d "$HOME/.rbenv" ]; then
+    export PATH=$HOME/.rbenv/bin:$PATH
+    eval "$(rbenv init -)"
+fi
+
 # Set up a sane google go environment
 export GOROOT=$HOME/go
 export PATH=$GOROOT/bin:$PATH
