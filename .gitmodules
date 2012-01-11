@@ -28,3 +28,6 @@
 [submodule "home/vim/bundle/nerdtree"]
 	path = home/vim/bundle/nerdtree
 	url = http://github.com/scrooloose/nerdtree
+[submodule "home/vim/bundle/ctrlp.vim"]
+	path = home/vim/bundle/ctrlp.vim
+	url = http://github.com/kien/ctrlp.vim
