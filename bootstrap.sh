@@ -1,6 +1,11 @@
 #!/bin/sh
 
-dotfiles="$HOME/dotfiles"
+# optionally specify an alternate repository location as the first argument
+if [ -z "$1" ]; then
+    dotfiles="$HOME/dotfiles"
+else
+    dotfiles="$1"
+fi
 
 link_absolute ()
 {
