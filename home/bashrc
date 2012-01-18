@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 # Source global definitions
-[[ -f /etc/bashrc ]] && . /etc/bashrc
+[ -r /etc/bashrc ] && . /etc/bashrc
+[ -r /etc/bash.bashrc ] && . /etc/bash.bashrc
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
