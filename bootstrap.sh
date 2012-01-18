@@ -9,10 +9,10 @@ fi
 
 link_absolute ()
 {
-    # if theres something there already
-    if [ -f "$1" -o -d "$1" ]; then
-        # if it's not a symlink already, confirm
-        if [ ! -h "$1" ]; then
+    # if it's not a symlink already, confirm
+    if [ ! -h "$1" ]; then
+        # if theres something there already
+        if [ -f "$1" -o -d "$1" ]; then
             read -p "Clobber $1 ? " yn
             case "$yn" in
                 [Yy]* ) break;;
