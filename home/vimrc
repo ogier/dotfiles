@@ -152,3 +152,22 @@ cmap w!! w !sudo tee % >/dev/null
 " Shouldn't need shift
 nnoremap ; :
 nnoremap , ;
+
+" For colemak users
+function! StartColemak()
+       nnoremap n j
+       nnoremap j n
+       nnoremap p k
+       nnoremap k p
+       nnoremap <leader>k :call StopColemak()<cr>
+endfunction
+
+function! StopColemak()
+       nnoremap n n
+       nnoremap j j
+       nnoremap p p
+       nnoremap k k
+       nnoremap <leader>k :call StartColemak()<cr>
+endfunction
+
+nnoremap <leader>k :call StartColemak()<cr>
