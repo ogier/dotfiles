@@ -30,7 +30,6 @@ set ttyfast
 set ruler
 set backspace=indent,eol,start
 "set relativenumber
-"set laststatus=2
 "set undofile
 
 " Backups
@@ -51,6 +50,17 @@ map <leader><space> :noh<cr>
 runtime macros/matchit.vim
 nmap <tab> %
 vmap <tab> %
+
+" Status line
+set laststatus=2
+set statusline=%-.40f\                  " filename
+set statusline+=%y\                     " syntax type
+set statusline+=[%{&ff},%{&fenc},       " file settings
+set statusline+=%{&et?'spaces':'tabs'}, " expand tabs?
+set statusline+=%{&ts}]\                " tabstop width
+set statusline+=%=                      " right align
+set statusline+=(%l,%c)\                " cursor position
+set statusline+=%P                      " percentage through file
 
 " Color scheme (terminal)
 syntax on
