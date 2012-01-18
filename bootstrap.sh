@@ -1,34 +1,34 @@
 #!/bin/sh
 
-dotfiles=~/dotfiles/home
+dotfiles="$HOME/dotfiles"
 
 link_absolute ()
 {
     # if theres something there already
-    if [ -f $1 -o -d $1 ]; then
+    if [ -f "$1" -o -d "$1" ]; then
         # if it's not a symlink already, confirm
-        if [ ! -h $1 ]; then
+        if [ ! -h "$1" ]; then
             read -p "Clobber $1 ? " yn
-            case $yn in
+            case "$yn" in
                 [Yy]* ) break;;
                 * ) echo "Skipping $1"; return;;
             esac
         fi
-        rm -r $1
+        rm -r "$1"
     fi
-    ln -v -s $2 $1
+    ln -v -s "$2" "$1"
 }
 
 link_dotfile ()
 {
-    link_absolute ~/.$1 $dotfiles/$1
+    link_absolute "$HOME/.$1" "$dotfiles/home/$1"
 }
 
 link_children ()
 {
-    mkdir -v -p $1
-    for child in $2/*; do
-        link_absolute $1/`basename $child` $child
+    mkdir -v -p "$1"
+    for child in "$2/"*; do
+        link_absolute "$1/`basename $child`" "$child"
     done
 }
 
@@ -45,10 +45,10 @@ link_dotfile zshrc
 # vim
 
 link_dotfile vimrc
-mkdir -v -p ~/.vim/tmp/backup//
-mkdir -v -p ~/.vim/tmp/swap//
-for dir in ~/dotfiles/home/vim/*; do
-    link_children ~/.vim/`basename $dir` $dir
+mkdir -v -p "$HOME/.vim/tmp/backup/"
+mkdir -v -p "$HOME/.vim/tmp/swap/"
+for dir in "$dotfiles/home/vim/"*; do
+    link_children "$HOME/.vim/`basename $dir`" "$dir"
 done
 
 # git
