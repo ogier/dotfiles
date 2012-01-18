@@ -29,7 +29,8 @@ set cursorline
 set ttyfast
 set ruler
 set backspace=indent,eol,start
-"set relativenumber
+set relativenumber
+set colorcolumn=81
 "set undofile
 
 " Backups
@@ -58,8 +59,10 @@ set statusline+=%y\                     " syntax type
 set statusline+=[%{&ff},%{&fenc},       " file settings
 set statusline+=%{&et?'spaces':'tabs'}, " expand tabs?
 set statusline+=%{&ts}]\                " tabstop width
+set statusline+=%h%r%w%m                " flags
 set statusline+=%=                      " right align
-set statusline+=(%l,%c)\                " cursor position
+set statusline+=%{synIDattr(synID(line('.'),col('.'),1),'name')}\  " current syntax element
+set statusline+=(%c,%l/%L)              " cursor position
 set statusline+=%P                      " percentage through file
 
 " Color scheme (terminal)
