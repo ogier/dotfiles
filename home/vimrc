@@ -140,6 +140,9 @@ map <leader>a :Ack
 let g:Tex_DefaultTargetFormat='pdf'
 let g:Imap_UsePlaceHolders=0
 
+" Gundo
+nnoremap <leader>u :GundoToggle<cr>
+
 " Faster Esc
 inoremap jj <ESC>
 

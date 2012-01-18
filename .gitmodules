@@ -31,3 +31,6 @@
 [submodule "home/vim/bundle/ctrlp.vim"]
 	path = home/vim/bundle/ctrlp.vim
 	url = http://github.com/kien/ctrlp.vim
+[submodule "home/vim/bundle/gundo"]
+	path = home/vim/bundle/gundo
+	url = http://github.com/sjl/gundo.vim
