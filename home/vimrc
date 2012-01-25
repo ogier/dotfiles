@@ -143,9 +143,6 @@ let g:Imap_UsePlaceHolders=0
 " Gundo
 nnoremap <leader>u :GundoToggle<cr>
 
-" Faster Esc
-inoremap jj <ESC>
-
 " Edit .vimrc
 nmap <leader>ev :e $MYVIMRC<cr>
 
