@@ -9,18 +9,20 @@ fi
 
 link_absolute ()
 {
-    # if it's not a symlink already, confirm
-    if [ ! -h "$1" ]; then
-        # if theres something there already
-        if [ -f "$1" -o -d "$1" ]; then
-            read -p "Clobber $1 ? " yn
-            case "$yn" in
-                [Yy]* ) break;;
-                * ) echo "Skipping $1"; return;;
-            esac
-        fi
-        rm -r "$1"
+    # if there's already a proper link set up, do nothing
+    if [ -h "$1" -a "`readlink \"$1\"`" = "$2" ]; then
+        return
     fi
+
+    # ask before clobbering anything
+    if [ -f "$1" -o -d "$1" ]; then
+        read -p "Clobber $1 ? " yn
+        case "$yn" in
+            [Yy]* ) rm -r "$1"; break;;
+            * ) echo "Skipping $1"; return;;
+        esac
+    fi
+
     ln -v -s "$2" "$1"
 }
 
