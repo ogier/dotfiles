@@ -157,28 +157,5 @@ nnoremap ; :
 nnoremap , ;
 
 " For colemak users
-function! StartColemak()
-    nnoremap n j
-    vnoremap n j
-    nnoremap e k
-    vnoremap e k
-    nnoremap k n
-    vnoremap k n
-    nnoremap j e
-    vnoremap j e
-    nnoremap <leader>k :call StopColemak()<cr>
-endfunction
-
-function! StopColemak()
-    nnoremap n n
-    vnoremap n n
-    nnoremap e e
-    vnoremap e e
-    nnoremap k k
-    vnoremap k k
-    nnoremap j j
-    vnoremap j j
-    nnoremap <leader>k :call StartColemak()<cr>
-endfunction
-
-nnoremap <leader>k :call StartColemak()<cr>
+nnoremap <leader>k :set langmap=nj,ek,kn,je<cr>
+nnoremap <leader>n :set langmap=<cr>
