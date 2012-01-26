@@ -75,19 +75,6 @@ colorscheme molokai
 map <F2> :NERDTreeToggle<cr>
 let NERDTreeIgnore=['.vim$', '\~$', '.*\.pyc$', 'pip-log\.txt$']
 
-" Use the damn hjkl keys
-nnoremap <up> <nop>
-nnoremap <down> <nop>
-nnoremap <left> <nop>
-nnoremap <right> <nop>
-
-" Easy buffer navigation
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
-map <leader>w <C-w>v<C-w>l
-
 " Nice pasting
 set pastetoggle=<leader>p
 
@@ -131,10 +118,7 @@ au InsertEnter * call clearmatches()
 au InsertLeave * call SetExtraWhitespace()
 
 " TagList
-nmap <leader>t :TlistToggle<cr>
-
-" Ack
-map <leader>a :Ack
+nnoremap <leader>t :TlistToggle<cr>
 
 " LatexSuite
 let g:Tex_DefaultTargetFormat='pdf'
@@ -144,7 +128,7 @@ let g:Imap_UsePlaceHolders=0
 nnoremap <leader>u :GundoToggle<cr>
 
 " Edit .vimrc
-nmap <leader>ev :e $MYVIMRC<cr>
+nnoremap <leader>ev :e $MYVIMRC<cr>
 
 " Sudo to write
 cmap w!! w !sudo tee % >/dev/null
