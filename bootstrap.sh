@@ -58,6 +58,10 @@ for dir in "$dotfiles/home/vim/"*; do
     link_children "$HOME/.vim/`basename $dir`" "$dir"
 done
 
+# tmux
+
+link_dotfile tmux.conf
+
 # git
 
 link_dotfile gitconfig

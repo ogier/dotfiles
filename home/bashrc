@@ -11,7 +11,7 @@
 export PATH=$HOME/bin:$PATH
 
 # Set the terminal type so applications (e.g. emacs) use color.
-export TERM=xterm-color
+export TERM=screen-256color-bce
 
 # Set the shell prompt.  See the bash man page for a description-
 # of special characters.
