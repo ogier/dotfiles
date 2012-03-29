@@ -42,7 +42,6 @@ link_children ()
 
 # shells
 
-link_dotfile profile
 link_dotfile bashrc
 link_dotfile zshrc
 

@@ -1,9 +1,58 @@
-#!/usr/bin/env bash
-
-# Source global definitions
-[ -r /etc/bashrc ] && . /etc/bashrc
-[ -r /etc/bash.bashrc ] && . /etc/bash.bashrc
-
 # Set the shell prompt.  See the bash man page for a description-
 # of special characters.
 export PS1='[\[\e[0;36m\]\u\[\e[0;37m\]@\[\e[0;35m\]\h \[\e[0;34m\]\w\[\e[00m\]] '
+
+# Miscellaneous user binaries
+export PATH=$HOME/bin:$PATH
+
+# Create aliases for commonly used commands.-
+alias ls="ls --color=auto -G"
+alias la="ls --color=auto -al -G"
+alias ll="ls --color=auto -l -G"
+
+# tmux needs special help with coloring
+alias tmux="TERM=screen-256color-bce tmux"
+
+# Use virtualenv where possible
+if [ -f /usr/bin/virtualenvwrapper.sh ]; then
+	export WORKON_HOME=$HOME/.virtualenvs
+	source /usr/bin/virtualenvwrapper.sh
+fi
+if [ -f $HOME/bin/virtualenvwrapper.sh ]; then
+	export WORKON_HOME=$HOME/.virtualenvs
+	source $HOME/bin/virtualenvwrapper.sh
+fi
+
+# Hack to make moving around virtualenvs easier
+# On cd, if a .venv file exists, workon the contents
+has_virtualenv() {
+    if [[ -e .venv && ! -z $WORKON_HOME ]]; then
+        CURRENT_VENV=$WORKON_HOME/`cat .venv`
+        if [ "$CURRENT_VENV" != "$VIRTUAL_ENV" ]; then
+            workon `cat .venv`
+        fi
+    fi
+}
+venv_cd () {
+    cd "$@" && has_virtualenv
+}
+alias cd="venv_cd"
+
+# Start rvm when possible
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
+
+# Start rbenv
+if [ -d "$HOME/.rbenv" ]; then
+    export PATH=$HOME/.rbenv/bin:$PATH
+    eval "$(rbenv init -)"
+fi
+
+# Add readline support to programs
+add_readline () {
+    socat READLINE EXEC:$1
+}
+alias rl="add_readline"
+
+# Use ~/go for local go packages
+export GOPATH=$HOME/go
+export PATH=$GOPATH/bin:$PATH
