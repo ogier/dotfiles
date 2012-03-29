@@ -4,11 +4,8 @@
 [ -r /etc/bashrc ] && . /etc/bashrc
 [ -r /etc/bash.bashrc ] && . /etc/bash.bashrc
 
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
-
-# Add a directory for user executables
-export PATH=$HOME/bin:$PATH
+# Share most config with zsh
+source ~/.profile
 
 # Set the terminal type so applications (e.g. emacs) use color.
 export TERM=screen-256color-bce
@@ -16,86 +13,3 @@ export TERM=screen-256color-bce
 # Set the shell prompt.  See the bash man page for a description-
 # of special characters.
 export PS1='[\[\e[0;36m\]\u\[\e[0;37m\]@\[\e[0;35m\]\h \[\e[0;34m\]\w\[\e[00m\]] '
-
-# Do not log out with <ctrl-d>
-set -o ignoreeof
-
-# Create aliases for commonly used commands.-
-alias ls="ls --color=auto -G"
-alias la="ls --color=auto -al -G"
-alias ll="ls --color=auto -l -G"
-
-# Start up ssh-agent
-SSH_ENV="$HOME/.ssh/environment"
-
-function start_agent {
-  if [ -x /usr/bin/ssh-agent ]; then
-    if [ -w `dirname ${SSH_ENV}` ]; then
-      echo "Initializing new SSH agent..."
-      /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
-      echo succeeded
-      chmod 600 "${SSH_ENV}"
-      . "${SSH_ENV}" > /dev/null
-      /usr/bin/ssh-add;
-    else
-      echo "Can't write to ${SSH_ENV}... skipping";
-    fi
-  else
-    echo "SSH agent not installed... skipping";
-  fi
-}
-
-# Source SSH settings, if applicable
-if [ -f "${SSH_ENV}" ]; then
-  . "${SSH_ENV}" > /dev/null
-  #ps ${SSH_AGENT_PID} doesn't work under cygwin
-  ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
-    start_agent;
-  }
-else
-  start_agent;
-fi
-
-# Use virtualenv where possible
-if [ -f /usr/bin/virtualenvwrapper.sh ]; then
-	export WORKON_HOME=$HOME/.virtualenvs
-	source /usr/bin/virtualenvwrapper.sh
-fi
-if [ -f $HOME/bin/virtualenvwrapper.sh ]; then
-	export WORKON_HOME=$HOME/.virtualenvs
-	source $HOME/bin/virtualenvwrapper.sh
-fi
-
-# Hack to make moving around virtualenvs easier
-# On cd, if a .venv file exists, workon the contents
-has_virtualenv() {
-    if [[ -e .venv && ! -z $WORKON_HOME ]]; then
-        CURRENT_VENV=$WORKON_HOME/`cat .venv`
-        if [ "$CURRENT_VENV" != "$VIRTUAL_ENV" ]; then
-            workon `cat .venv`
-        fi
-    fi
-}
-venv_cd () {
-    cd "$@" && has_virtualenv
-}
-alias cd="venv_cd"
-
-# Start rvm when possible
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
-
-# Start rbenv
-if [ -d "$HOME/.rbenv" ]; then
-    export PATH=$HOME/.rbenv/bin:$PATH
-    eval "$(rbenv init -)"
-fi
-
-# Set up a sane google go environment
-export GOPATH=$HOME/go
-export PATH=$GOPATH/bin:$PATH
-
-# Add readline support to programs
-add_readline () {
-    socat READLINE EXEC:$1
-}
-alias rl="add_readline"

@@ -40,13 +40,10 @@ link_children ()
 }
 
 
-# bash
+# shells
 
-link_dotfile bash_profile
+link_dotfile profile
 link_dotfile bashrc
-
-# zsh
-
 link_dotfile zshrc
 
 # vim

@@ -2,21 +2,9 @@ setopt prompt_subst
 autoload -Uz vcs_info
 
 autoload -U compinit; compinit
-autoload -U bashcompinit; bashcompinit
 
-# from http://zshwiki.org/home/convert/bash
-bash_source() {
-  alias shopt=':'
-  alias _expand=_bash_expand
-  alias _complete=_bash_comp
-  emulate -L sh
-  setopt kshglob noshglob braceexpand
-
-  source "$@"
-}
-
-# hack to share shell config with bash
-bash_source ~/.bashrc
+# Share most config with bash
+source ~/.profile
 
 local return_code="%(?..%B%F{red}%? ↵%f%b)"
 # red if we are superuser
