@@ -3,9 +3,6 @@ autoload -Uz vcs_info
 
 autoload -U compinit; compinit
 
-# Share most config with bash
-source ~/.profile
-
 local return_code="%(?..%B%F{red}%? ↵%f%b)"
 # red if we are superuser
 local userhost="%(!.%F{red}.%F{green}%n@)%m%f"
