@@ -11,18 +11,18 @@ import subprocess
 
 subtrees = [
     ('ack', 'http://github.com/mileszs/ack.vim', 'home/vim/bundle/ack.vim'),
-    ('ctrlp', 'tp://github.com/kien/ctrlp.vim', 'home/vim/bundle/ctrlp.vim'),
-    ('gundo', 'tp://github.com/sjl/gundo.vim', 'home/vim/bundle/gundo'),
+    ('ctrlp', 'http://github.com/kien/ctrlp.vim', 'home/vim/bundle/ctrlp.vim'),
+    ('gundo', 'http://github.com/sjl/gundo.vim', 'home/vim/bundle/gundo'),
     ('nerdcommenter', 'http://github.com/scrooloose/nerdcommenter', 'home/vim/bundle/NERD_commenter'),
-    ('nerdtree', '   http://github.com/scrooloose/nerdtree', 'home/vim/bundle/nerdtree'),
-    ('pathogen', '   https://github.com/tpope/vim-pathogen.git', 'pathogen'),
-    ('scmdiff', '://github.com/ghewgill/vim-scmdiff', 'home/vim/bundle/vim-scmdiff/plugin'),
-    ('searchcomplete', 'p://github.com/vim-scripts/SearchComplete', 'home/vim/bundle/SearchComplete'),
-    ('snipmate', '   http://github.com/msanders/snipmate.vim', 'home/vim/bundle/snipmate.vim'),
-    ('sudo', 'ttps://github.com/vim-scripts/sudo.vim', 'home/vim/bundle/sudo.vim'),
-    ('supertab', '   http://github.com/ervandew/supertab', 'home/vim/bundle/supertab'),
-    ('surround', '   http://github.com/tpope/vim-surround', 'home/vim/bundle/vim-surround'),
-    ('taglist', '://github.com/vim-scripts/taglist.vim', 'home/vim/bundle/taglist'),
+    ('nerdtree', 'http://github.com/scrooloose/nerdtree', 'home/vim/bundle/nerdtree'),
+    ('pathogen', 'http://github.com/tpope/vim-pathogen.git', 'pathogen'),
+    ('scmdiff', 'http://github.com/ghewgill/vim-scmdiff', 'home/vim/bundle/vim-scmdiff/plugin'),
+    ('searchcomplete', 'http://github.com/vim-scripts/SearchComplete', 'home/vim/bundle/SearchComplete'),
+    ('snipmate', 'http://github.com/msanders/snipmate.vim', 'home/vim/bundle/snipmate.vim'),
+    ('sudo', 'http://github.com/vim-scripts/sudo.vim', 'home/vim/bundle/sudo.vim'),
+    ('supertab', 'http://github.com/ervandew/supertab', 'home/vim/bundle/supertab'),
+    ('surround', 'http://github.com/tpope/vim-surround', 'home/vim/bundle/vim-surround'),
+    ('taglist', 'http://github.com/vim-scripts/taglist.vim', 'home/vim/bundle/taglist'),
 ]
 
 def run():
