@@ -1,0 +1,4 @@
+# Source .bashrc if we are interactive
+case $- in
+    *i*) source ~/.bashrc;;
+esac
