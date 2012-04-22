@@ -67,3 +67,7 @@ link_dotfile gitignore
 # hg
 
 link_dotfile hgrc
+
+# devilspie
+
+link_children "$HOME/.devilspie" "$dotfiles/home/devilspie"
