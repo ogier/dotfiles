@@ -17,6 +17,9 @@ alias ll="ls --color=auto -al"
 # tmux needs special help with coloring
 alias tmux="TERM=screen-256color-bce tmux"
 
+# Use pacmatic as pacman client where possible
+[ -x $(which pacmatic) ] && export PACMAN=$(which pacmatic)
+
 # Use virtualenv where possible
 if [ -f /usr/bin/virtualenvwrapper.sh ]; then
 	export WORKON_HOME=$HOME/.virtualenvs
