@@ -21,7 +21,7 @@ alias tmux="TERM=screen-256color-bce tmux"
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # Use pacmatic as pacman client where possible
-[ -x $(which pacmatic) ] && export PACMAN=$(which pacmatic)
+[ -x "$(which pacmatic)" ] && export PACMAN=$(which pacmatic)
 
 # Use virtualenv where possible
 if [ -f /usr/bin/virtualenvwrapper.sh ]; then
