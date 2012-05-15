@@ -17,6 +17,9 @@ alias ll="ls --color=auto -al"
 # tmux needs special help with coloring
 alias tmux="TERM=screen-256color-bce tmux"
 
+# Make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
 # Use pacmatic as pacman client where possible
 [ -x $(which pacmatic) ] && export PACMAN=$(which pacmatic)
 
