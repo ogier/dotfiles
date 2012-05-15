@@ -2,7 +2,7 @@
 " File:          autoload/ctrlp.vim
 " Description:   Fuzzy file, buffer, mru and tag finder.
 " Author:        Kien Nguyen <github.com/kien>
-" Version:       1.7.6
+" Version:       1.7.7
 " =============================================================================
 
 " ** Static variables {{{1
@@ -30,11 +30,19 @@ fu! s:ignore() "{{{2
 		\ '_build$',
 		\ ]
 	let igfiles = [
-		\ '[.]bak$',
 		\ '\~$',
 		\ '#.+#$',
 		\ '[._].*\.swp$',
 		\ 'core\.\d+$',
+		\ '\.exe$',
+		\ '\.so$',
+		\ '\.bak$',
+		\ '\.png$',
+		\ '\.jpg$',
+		\ '\.gif$',
+		\ '\.zip$',
+		\ '\.rar$',
+		\ '\.tar\.gz$',
 		\ ]
 	retu {
 		\ 'dir': '\v'.join(igdirs, '|'),
@@ -46,7 +54,6 @@ let [s:pref, s:opts, s:new_opts] = ['g:ctrlp_', {
 	\ 'arg_map':               ['s:argmap', 0],
 	\ 'buffer_func':           ['s:buffunc', {}],
 	\ 'by_filename':           ['s:byfname', 0],
-	\ 'clear_cache_on_exit':   ['s:clrex', 1],
 	\ 'custom_ignore':         ['s:usrign', s:ignore()],
 	\ 'default_input':         ['s:deftxt', 0],
 	\ 'dont_split':            ['s:nosplit', 'netrw'],
@@ -218,10 +225,11 @@ endf
 "}}}1
 " * Open & Close {{{1
 fu! s:Open()
+	let s:ermsg = v:errmsg
 	cal s:log(1)
 	cal s:getenv()
 	cal s:execextvar('enter')
-	sil! exe 'noa keepa' ( s:mwbottom ? 'bo' : 'to' ) '1new ControlP'
+	sil! exe 'noa keepa' ( s:mwbottom ? 'bo' : 'to' ) '1new +setl\ nobl ControlP'
 	cal s:buffunc(1)
 	let [s:bufnr, s:prompt, s:winw] = [bufnr('%'), ['', '', ''], winwidth(0)]
 	abc <buffer>
@@ -256,11 +264,12 @@ fu! s:Close()
 	cal ctrlp#recordhist()
 	cal s:execextvar('exit')
 	cal s:log(0)
+	let v:errmsg = s:ermsg
 	ec
 endf
 " * Clear caches {{{1
 fu! ctrlp#clr(...)
-	let g:ctrlp_new{ a:0 ? a:1 : 'cache' } = 1
+	let [s:matches, g:ctrlp_new{ a:0 ? a:1 : 'cache' }] = [1, 1]
 endf
 
 fu! ctrlp#clra()
@@ -319,12 +328,15 @@ fu! s:GlobPath(dirs, depth)
 endf
 
 fu! s:UserCmd(lscmd)
-	let path = s:dyncwd
+	let [path, lscmd] = [s:dyncwd, a:lscmd]
 	if exists('+ssl') && &ssl
 		let [ssl, &ssl, path] = [&ssl, 0, tr(path, '/', '\')]
 	en
+	if has('win32') || has('win64')
+		let lscmd = substitute(lscmd, '\v(^|&&\s*)\zscd (/d)@!', 'cd /d ', '')
+	en
 	let path = exists('*shellescape') ? shellescape(path) : path
-	let g:ctrlp_allfiles = split(system(printf(a:lscmd, path)), "\n")
+	let g:ctrlp_allfiles = split(system(printf(lscmd, path)), "\n")
 	if exists('+ssl') && exists('ssl')
 		let &ssl = ssl
 		cal map(g:ctrlp_allfiles, 'tr(v:val, "\\", "/")')
@@ -370,9 +382,10 @@ endf
 " * MatchedItems() {{{1
 fu! s:MatchIt(items, pat, limit, exc)
 	let [lines, id] = [[], 0]
+	let pat = s:byfname ? split(a:pat, '^[^;]\+\zs;', 1) : a:pat
 	for item in a:items
 		let id += 1
-		try | if !( s:ispath && item == a:exc ) && call(s:mfunc, [item, a:pat]) >= 0
+		try | if !( s:ispath && item == a:exc ) && call(s:mfunc, [item, pat]) >= 0
 			cal add(lines, item)
 		en | cat | brea | endt
 		if a:limit > 0 && len(lines) >= a:limit | brea | en
@@ -414,10 +427,14 @@ fu! s:SplitPattern(str)
 	if exists('lst')
 		let pat = ''
 		if !empty(lst)
-			let pat = lst[0]
-			for item in range(1, len(lst) - 1)
-				let pat .= '[^'.lst[item - 1].']\{-}'.lst[item]
-			endfo
+			if s:byfname && index(lst, ';') > 0
+				let fbar = index(lst, ';')
+				let lst_1 = s:sublist(lst, 0, fbar - 1)
+				let lst_2 = len(lst) - 1 > fbar ? s:sublist(lst, fbar + 1, -1) : ['']
+				let pat = s:buildpat(lst_1).';'.s:buildpat(lst_2)
+			el
+				let pat = s:buildpat(lst)
+			en
 		en
 	en
 	retu escape(pat, '~')
@@ -425,6 +442,7 @@ endf
 " * BuildPrompt() {{{1
 fu! s:Render(lines, pat)
 	let [&ma, lines, s:height] = [1, a:lines, min([len(a:lines), s:winh])]
+	let pat = s:byfname ? split(a:pat, '^[^;]\+\zs;', 1)[0] : a:pat
 	" Setup the match window
 	sil! exe '%d _ | res' s:height
 	" Print the new items
@@ -439,7 +457,7 @@ fu! s:Render(lines, pat)
 	let s:matched = copy(lines)
 	" Sorting
 	if !s:nosort()
-		let s:compat = a:pat
+		let s:compat = pat
 		cal sort(lines, 's:mixedsort')
 		unl s:compat
 	en
@@ -456,7 +474,7 @@ fu! s:Render(lines, pat)
 	en
 	" Highlighting
 	if s:dohighlight()
-		cal s:highlight(a:pat, s:mathi[1])
+		cal s:highlight(pat, s:mathi[1])
 	en
 endf
 
@@ -566,29 +584,39 @@ fu! s:PrtInsert(...)
 		let type = s:insertstr()
 		if type == 'cancel' | retu | en
 	en
+	if type ==# 'r'
+		let regcont = s:getregs()
+		if regcont < 0 | retu | en
+	en
 	unl! s:hstgot
 	let s:act_add = 1
-	let s:prompt[0] .= type == 'w' ? s:crword
-		\ : type == 's' ? getreg('/')
-		\ : type == 'v' ? s:crvisual
-		\ : type == 'c' ? substitute(getreg('+'), '\n', '\\n', 'g')
-		\ : type == 'f' ? s:crgfile : s:prompt[0]
+	let s:prompt[0] .= type ==# 'w' ? s:crword
+		\ : type ==# 'f' ? s:crgfile
+		\ : type ==# 's' ? s:regisfilter('/')
+		\ : type ==# 'v' ? s:crvisual
+		\ : type ==# 'c' ? s:regisfilter('+')
+		\ : type ==# 'r' ? regcont : ''
 	cal s:BuildPrompt(1)
 	unl s:act_add
 endf
 
 fu! s:PrtExpandDir()
-	let prt = s:prompt
-	if prt[0] == '' | retu | en
+	let str = s:prompt[0]
+	if str =~ '\v^\@(cd|lc[hd]?|chd)\s.+' && s:spi
+		let hasat = split(str, '\v^\@(cd|lc[hd]?|chd)\s*\zs')
+		let str = get(hasat, 1, '')
+	en
+	if str == '' | retu | en
 	unl! s:hstgot
 	let s:act_add = 1
-	let [base, seed] = s:headntail(prt[0])
+	let [base, seed] = s:headntail(str)
 	let dirs = s:dircompl(base, seed)
 	if len(dirs) == 1
-		let prt[0] = dirs[0]
+		let str = dirs[0]
 	elsei len(dirs) > 1
-		let prt[0] .= s:findcommon(dirs, prt[0])
+		let str .= s:findcommon(dirs, str)
 	en
+	let s:prompt[0] = exists('hasat') ? hasat[0].str : str
 	cal s:BuildPrompt(1)
 	unl s:act_add
 endf
@@ -840,17 +868,19 @@ fu! ctrlp#acceptfile(mode, line, ...)
 endf
 
 fu! s:SpecInputs(str)
-	let spi = !s:itemtype || s:getextvar('specinput') > 0
-	if a:str == '..' && spi
-		cal s:parentdir(s:dyncwd)
-		cal ctrlp#setlines()
+	if a:str =~ '^\.\.\.*$' && s:spi
+		let cwd = s:dyncwd
+		cal ctrlp#setdir('../'.repeat('../', strlen(a:str) - 2))
+		if cwd != s:dyncwd | cal ctrlp#setlines() | en
 		cal s:PrtClear()
 		retu 1
-	elsei a:str =~ '^[\/]$' && spi
+	elsei a:str == s:lash && s:spi
 		cal s:SetWD(2, 0)
 		cal ctrlp#setlines()
 		cal s:PrtClear()
 		retu 1
+	elsei a:str =~ '^@.\+' && s:spi
+		retu s:at(a:str)
 	elsei a:str == '?'
 		cal s:PrtExit()
 		let hlpwin = &columns > 159 ? '| vert res 80' : ''
@@ -865,8 +895,8 @@ fu! s:AcceptSelection(mode)
 	if a:mode == 'e' | if s:SpecInputs(str) | retu | en | en
 	" Get the selected line
 	let line = !empty(s:lines) ? s:lines[line('.') - 1] : ''
-	if a:mode != 'e' && s:itemtype < 3 && line == ''
-		\ && str !~ '\v^(\.\.|/|\\|\?)$'
+	if a:mode != 'e' && !s:itemtype && line == ''
+		\ && str !~ '\v^(\.\.\.*|/|\\|\?|\@.+)$'
 		cal s:CreateNewFile(a:mode) | retu
 	en
 	if empty(line) | retu | en
@@ -1224,11 +1254,6 @@ fu! ctrlp#rmbasedir(items)
 	retu a:items
 endf
 
-fu! s:parentdir(curr)
-	let parent = s:getparent(a:curr)
-	if parent != a:curr | cal ctrlp#setdir(parent) | en
-endf
-
 fu! s:getparent(item)
 	let parent = substitute(a:item, '[\/][^\/]\+[\/:]\?$', '', '')
 	if parent == '' || match(parent, '[\/]') < 0
@@ -1292,7 +1317,6 @@ fu! s:highlight(pat, grp)
 	if !empty(a:pat) && s:ispath
 		let pat = s:regexp ? substitute(a:pat, '\\\@<!\^', '^> \\zs', 'g') : a:pat
 		if s:byfname
-			" Match only filename
 			let pat = substitute(pat, '\[\^\(.\{-}\)\]\\{-}', '[^\\/\1]\\{-}', 'g')
 			let pat = substitute(pat, '\$\@<!$', '\\ze[^\\/]*$', 'g')
 		en
@@ -1409,7 +1433,7 @@ fu! s:nosplit()
 endf
 
 fu! s:setupblank()
-	setl noswf nobl nonu nowrap nolist nospell nocuc wfh
+	setl noswf nonu nowrap nolist nospell nocuc wfh
 	setl fdc=0 fdl=99 tw=0 bt=nofile bh=unload
 	if v:version > 702
 		setl nornu noudf cc=0
@@ -1418,7 +1442,8 @@ endf
 
 fu! s:leavepre()
 	if exists('s:bufnr') && s:bufnr == bufnr('%') | bw! | en
-	if s:clrex && !( has('clientserver') && len(split(serverlist(), "\n")) > 1 )
+	if !( exists('g:ctrlp_clear_cache_on_exit') && !g:ctrlp_clear_cache_on_exit )
+		\ && !( has('clientserver') && len(split(serverlist(), "\n")) > 1 )
 		cal ctrlp#clra()
 	en
 endf
@@ -1428,7 +1453,34 @@ fu! s:checkbuf()
 		exe s:bufnr.'bw!'
 	en
 endf
+
+fu! s:iscmdwin()
+	let ermsg = v:errmsg
+	sil! noa winc p
+	sil! noa winc p
+	let [v:errmsg, ermsg] = [ermsg, v:errmsg]
+	retu ermsg =~ '^E11:'
+endf
 " Arguments {{{2
+fu! s:at(str)
+	if a:str =~ '\v^\@(cd|lc[hd]?|chd).*'
+		let str = substitute(a:str, '\v^\@(cd|lc[hd]?|chd)\s*', '', '')
+		if str == '' | retu 1 | en
+		let str = str =~ '^%:.\+' ? fnamemodify(s:crfile, str[1:]) : str
+		let path = fnamemodify(expand(str, 1), ':p')
+		if isdirectory(path)
+			if path != s:dyncwd
+				cal ctrlp#setdir(path)
+				cal ctrlp#setlines()
+			en
+			cal ctrlp#recordhist()
+			cal s:PrtClear()
+		en
+		retu 1
+	en
+	retu 0
+endf
+
 fu! s:tail()
 	if exists('s:optail') && !empty('s:optail')
 		let tailpref = match(s:optail, '^\s*+') < 0 ? ' +' : ' '
@@ -1438,7 +1490,8 @@ fu! s:tail()
 endf
 
 fu! s:sanstail(str)
-	let [str, pat] = [substitute(a:str, '\\\\', '\', 'g'), '\([^:]\|\\:\)*$']
+	let str = s:spi ? substitute(a:str, '^\(@.*$\|\\\\\ze@\)', '', 'g') : a:str
+	let [str, pat] = [substitute(str, '\\\\', '\', 'g'), '\([^:]\|\\:\)*$']
 	unl! s:optail
 	if match(str, '\\\@<!:'.pat) >= 0
 		let s:optail = matchstr(str, '\\\@<!:\zs'.pat)
@@ -1455,16 +1508,17 @@ fu! s:argmaps(md, ...)
 endf
 
 fu! s:insertstr()
-	let str = 'Insert: c[w]ord/c[f]ile/[s]earch/[v]isual/[c]lipboard? '
-	retu s:choices(str, ['w', 'f', 's', 'v', 'c'], 's:insertstr', [])
+	let str = 'Insert: c[w]ord/c[f]ile/[s]earch/[v]isual/[c]lipboard/[r]egister? '
+	retu s:choices(str, ['w', 'f', 's', 'v', 'c', 'r'], 's:insertstr', [])
+endf
+
+fu! s:textdialog(str)
+	redr | echoh MoreMsg | echon a:str | echoh None
+	retu nr2char(getchar())
 endf
 
 fu! s:choices(str, choices, func, args)
-	redr
-	echoh MoreMsg
-	echon a:str
-	echoh None
-	let char = nr2char(getchar())
+	let char = s:textdialog(a:str)
 	if index(a:choices, char) >= 0
 		retu char
 	elsei char =~# "\\v\<Esc>|\<C-c>|\<C-g>|\<C-u>|\<C-w>|\<C-[>"
@@ -1475,6 +1529,21 @@ fu! s:choices(str, choices, func, args)
 	en
 	retu call(a:func, a:args)
 endf
+
+fu! s:getregs()
+	let char = s:textdialog('Insert from register: ')
+	if char =~# "\\v\<Esc>|\<C-c>|\<C-g>|\<C-u>|\<C-w>|\<C-[>"
+		cal s:BuildPrompt(0)
+		retu -1
+	elsei char =~# "\<CR>"
+		retu s:getregs()
+	en
+	retu s:regisfilter(char)
+endf
+
+fu! s:regisfilter(reg)
+	retu substitute(getreg(a:reg), "[\t\n]", ' ', 'g')
+endf
 " Misc {{{2
 fu! s:modevar()
 	let s:matchtype = s:mtype()
@@ -1483,6 +1552,7 @@ fu! s:modevar()
 	let s:mfunc = s:mfunc()
 	let s:nolim = s:getextvar('nolim')
 	let s:dosort = s:getextvar('sort')
+	let s:spi = !s:itemtype || s:getextvar('specinput') > 0
 endf
 
 fu! s:nosort()
@@ -1572,7 +1642,7 @@ fu! s:lastvisual()
 	let [ovreg, ovtype] = [getreg('v'), getregtype('v')]
 	let [oureg, outype] = [getreg('"'), getregtype('"')]
 	sil! norm! gv"vy
-	let selected = substitute(getreg('v'), '\n', '\\n', 'g')
+	let selected = s:regisfilter('v')
 	cal setreg('v', ovreg, ovtype)
 	cal setreg('"', oureg, outype)
 	cal winrestview(cview)
@@ -1617,7 +1687,12 @@ fu! s:settype(type)
 endf
 " Matching {{{2
 fu! s:matchfname(item, pat)
-	retu match(split(a:item, s:lash)[-1], a:pat)
+	let parts = split(a:item, '[\/]\ze[^\/]\+$')
+	let mfn = match(parts[-1], a:pat[0])
+	retu len(a:pat) == 1 ? mfn : len(a:pat) == 2 ?
+		\ ( mfn >= 0 && ( len(parts) == 2 ? match(parts[0], a:pat[1]) : -1 ) >= 0
+		\ ? 0 : -1 ) : -1
+	en
 endf
 
 fu! s:matchtabs(item, pat)
@@ -1626,6 +1701,14 @@ endf
 
 fu! s:matchtabe(item, pat)
 	retu match(split(a:item, '\t\+[^\t]\+$')[0], a:pat)
+endf
+
+fu! s:buildpat(lst)
+	let pat = a:lst[0]
+	for item in range(1, len(a:lst) - 1)
+		let pat .= '[^'.a:lst[item - 1].']\{-}'.a:lst[item]
+	endfo
+	retu pat
 endf
 
 fu! s:mfunc()
@@ -1734,7 +1817,7 @@ fu! ctrlp#setlines(...)
 endf
 
 fu! ctrlp#init(type, ...)
-	if exists('s:init') | retu | en
+	if exists('s:init') || s:iscmdwin() | retu | en
 	let [s:matches, s:init] = [1, 1]
 	cal ctrlp#reset()
 	cal s:Open()
