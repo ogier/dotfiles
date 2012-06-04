@@ -229,7 +229,7 @@ fu! s:Open()
 	cal s:log(1)
 	cal s:getenv()
 	cal s:execextvar('enter')
-	sil! exe 'noa keepa' ( s:mwbottom ? 'bo' : 'to' ) '1new +setl\ nobl ControlP'
+	sil! exe 'keepa' ( s:mwbottom ? 'bo' : 'to' ) '1new ControlP'
 	cal s:buffunc(1)
 	let [s:bufnr, s:prompt, s:winw] = [bufnr('%'), ['', '', ''], winwidth(0)]
 	abc <buffer>
@@ -248,8 +248,8 @@ endf
 
 fu! s:Close()
 	cal s:buffunc(0)
-	try | noa bun!
-	cat | noa clo! | endt
+	try | bun!
+	cat | clo! | endt
 	cal s:unmarksigns()
 	for key in keys(s:glbs) | if exists('+'.key)
 		sil! exe 'let &'.key.' = s:glb_'.key
@@ -712,7 +712,7 @@ endf
 
 fu! s:PrtExit()
 	if !has('autocmd') | cal s:Close() | en
-	winc p
+	exe ( winnr('$') == 1 ? 'bw!' : 'winc p' )
 endf
 
 fu! s:PrtHistory(...)
@@ -975,23 +975,23 @@ fu! s:OpenMulti()
 	let opts = matchlist(s:opmul, '\v^(\d+)=(\w)=(\w)=$')
 	if opts == [] | retu | en
 	let [nr, md, ucr] = opts[1:3]
+	let nopt = exists('g:ctrlp_open_multiple_files')
 	if s:argmap
 		let md = s:argmaps(md)
 		if md == 'cancel' | retu | en
+		let nr = nr == '0' ? ( nopt ? '' : '1' ) : nr
 	en
 	let mkd = values(s:marked)
 	cal s:sanstail(join(s:prompt, ''))
 	cal s:PrtExit()
-	if !nr || md == 'i'
+	if nr == '0' || md == 'i'
 		retu map(mkd, "s:openfile('bad', fnamemodify(v:val, ':.'), '')")
 	en
-	" Move the cursor to a reusable window
 	let [tail, fnesc] = [s:tail(), exists('*fnameescape') && v:version > 701]
-	let [emptytail, nwpt] = [empty(tail), exists('g:ctrlp_open_multiple_files')]
-	let bufnr = bufnr('^'.mkd[0].'$')
+	let [emptytail, bufnr] = [empty(tail), bufnr('^'.mkd[0].'$')]
 	let useb = bufnr > 0 && buflisted(bufnr) && emptytail
 	let fst = call('ctrlp#normcmd', useb ? ['b', 'bo vert sb'] : ['e'])
-	" Check if it's a replaceable buffer
+	" Check if the current window has a replaceable buffer
 	let repabl = ( empty(bufname('%')) && empty(&l:ft) ) || s:nosplit()
 	" Commands for the rest of the files
 	let [ic, cmds] = [1, { 'v': ['vert sb', 'vne'], 'h': ['sb', 'new'],
@@ -1007,7 +1007,7 @@ fu! s:OpenMulti()
 		let cmd = ic == 1 && ( ucr == 'r' || repabl ) ? fst : snd
 		let conds = [( nr != '' && nr > 1 && nr < ic ) || ( nr == '' && ic > 1 ),
 			\ nr != '' && nr < ic]
-		if conds[nwpt]
+		if conds[nopt]
 			if bufnr <= 0 | if fnesc
 				cal s:openfile('bad', fnamemodify(va, ':.'), '')
 			el
@@ -1170,7 +1170,12 @@ endf
 " Paths {{{2
 fu! s:formatline(str)
 	let cond = s:ispath && ( s:winw - 4 ) < s:strwidth(a:str)
-	retu '> '.( cond ? pathshorten(a:str) : a:str )
+	retu '> '.( cond ? s:pathshorten(a:str) : a:str )
+endf
+
+fu! s:pathshorten(str)
+	retu matchstr(a:str, '^.\{9}').'...'
+		\ .matchstr(a:str, '.\{'.( s:winw - 16 ).'}$')
 endf
 
 fu! s:dircompl(be, sd)
@@ -1433,7 +1438,7 @@ fu! s:nosplit()
 endf
 
 fu! s:setupblank()
-	setl noswf nonu nowrap nolist nospell nocuc wfh
+	setl noswf nonu nobl nowrap nolist nospell nocuc wfh
 	setl fdc=0 fdl=99 tw=0 bt=nofile bh=unload
 	if v:version > 702
 		setl nornu noudf cc=0
@@ -1820,7 +1825,7 @@ fu! ctrlp#init(type, ...)
 	if exists('s:init') || s:iscmdwin() | retu | en
 	let [s:matches, s:init] = [1, 1]
 	cal ctrlp#reset()
-	cal s:Open()
+	noa cal s:Open()
 	cal s:SetWD(a:0 ? a:1 : '')
 	cal s:MapKeys()
 	cal ctrlp#syntax()
@@ -1833,7 +1838,7 @@ if has('autocmd')
 	aug CtrlPAug
 		au!
 		au BufEnter ControlP cal s:checkbuf()
-		au BufLeave ControlP cal s:Close()
+		au BufLeave ControlP noa cal s:Close()
 		au VimLeavePre * cal s:leavepre()
 	aug END
 en
