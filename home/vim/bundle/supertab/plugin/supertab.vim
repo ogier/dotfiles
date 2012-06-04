@@ -1,8 +1,7 @@
-" Author:
-"   Original: Gergely Kontra <kgergely@mcl.hu>
-"   Current:  Eric Van Dewoestine <ervandew@gmail.com> (as of version 0.4)
-"   Please direct all correspondence to Eric.
-" Version: 1.6
+" Author: Eric Van Dewoestine <ervandew@gmail.com>
+"         Original concept and versions up to 0.32 written by
+"         Gergely Kontra <kgergely@mcl.hu>
+" Version: 2.0
 " GetLatestVimScripts: 1643 1 :AutoInstall: supertab.vim
 "
 " Description: {{{
@@ -675,33 +674,6 @@ function! s:ExpandMap(map) " {{{
   return map
 endfunction " }}}
 
-function! SuperTabDelayedCommand(command, ...) " {{{
-  echom 'delay: ' . a:command
-  let uid = fnamemodify(tempname(), ':t:r')
-  if &updatetime > 1
-    exec 'let g:delayed_updatetime_save' . uid . ' = &updatetime'
-  endif
-  exec 'let g:delayed_command' . uid . ' = a:command'
-  let &updatetime = len(a:000) ? a:000[0] : 1
-  exec 'augroup delayed_command' . uid
-    exec 'autocmd CursorHoldI * ' .
-      \ '  if exists("g:delayed_updatetime_save' . uid . '") | ' .
-      \ '    let &updatetime = g:delayed_updatetime_save' . uid . ' | ' .
-      \ '    unlet g:delayed_updatetime_save' . uid . ' | ' .
-      \ '  endif | ' .
-      \ '  exec g:delayed_command' . uid . ' | ' .
-      \ '  unlet g:delayed_command' . uid . ' | ' .
-      \ '  autocmd! delayed_command' . uid
-    " just in case user leaves insert mode before CursorHoldI fires
-    exec 'autocmd CursorHold * ' .
-      \ '  if exists("g:delayed_updatetime_save' . uid . '") | ' .
-      \ '    let &updatetime = g:delayed_updatetime_save' . uid . ' | ' .
-      \ '    unlet g:delayed_updatetime_save' . uid . ' | ' .
-      \ '  endif | ' .
-      \ '  autocmd! delayed_command' . uid
-  exec 'augroup END'
-endfunction " }}}
-
 function! SuperTabChain(completefunc, completekeys) " {{{
   let b:SuperTabChain = [a:completefunc, a:completekeys]
   setlocal completefunc=SuperTabCodeComplete
@@ -720,7 +692,6 @@ function! SuperTabCodeComplete(findstart, base) " {{{
   endif
 
   let Func = function(b:SuperTabChain[0])
-  let keys = escape(b:SuperTabChain[1], '<')
 
   if a:findstart
     let start = Func(a:findstart, a:base)
@@ -736,7 +707,8 @@ function! SuperTabCodeComplete(findstart, base) " {{{
     return results
   endif
 
-  call SuperTabDelayedCommand('call feedkeys("' . keys . '", "nt")')
+  exec 'let keys = "' . escape(b:SuperTabChain[1], '<') . '"'
+  call feedkeys("\<c-e>" . keys, 'nt')
   return []
 endfunction " }}}
 
@@ -859,6 +831,43 @@ endfunction " }}}
 " }}}
 
 call s:Init()
+
+function! TestSuperTabCodeComplete(findstart, base) " {{{
+  " Test supertab completion chaining w/ a minimal vim environment:
+  " $ vim -u NONE -U NONE \
+  "   --cmd "set nocp | sy on" \
+  "   -c "so ~/.vim/plugin/supertab.vim" \
+  "   -c "let g:SuperTabDefaultCompletionType = '<c-x><c-u>'" \
+  "   -c "set completefunc=TestSuperTabCodeComplete" \
+  "   -c "call SuperTabChain(&completefunc, '<c-p>')"
+  if a:findstart
+    let line = getline('.')
+    let start = col('.') - 1
+    if line[start] =~ '\.'
+      let start -= 1
+    endif
+    while start > 0 && line[start - 1] =~ '\w'
+      let start -= 1
+    endwhile
+    return start
+  else
+    let completions = []
+    if getline('.') =~ 'TestC'
+      call add(completions, {
+          \ 'word': 'test1(',
+          \ 'kind': 'm',
+          \ 'menu': 'test1(...)',
+        \ })
+      call add(completions, {
+          \ 'word': 'testing2(',
+          \ 'kind': 'm',
+          \ 'menu': 'testing2(...)',
+        \ })
+    endif
+
+    return completions
+  endif
+endfunction " }}}
 
 let &cpo = s:save_cpo
 
