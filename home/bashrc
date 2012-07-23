@@ -24,14 +24,18 @@ alias tmux="TERM=screen-256color-bce tmux"
 [ -x "$(which pacmatic)" ] && export PACMAN=$(which pacmatic)
 
 # Use virtualenv where possible
-if [ -f /usr/bin/virtualenvwrapper.sh ]; then
-	export WORKON_HOME=$HOME/.virtualenvs
-	source /usr/bin/virtualenvwrapper.sh
-fi
-if [ -f $HOME/bin/virtualenvwrapper.sh ]; then
-	export WORKON_HOME=$HOME/.virtualenvs
-	source $HOME/bin/virtualenvwrapper.sh
-fi
+wrappers=(
+    /usr/bin/virtualenvwrapper_lazy.sh
+    /usr/bin/virtualenvwrapper.sh
+    "$HOME/bin/virtualenvwrapper.sh"
+)
+for wrapper in "${wrappers[@]}"; do
+    if [ -f "$wrapper" ]; then
+        export WORKON_HOME="$HOME/.virtualenvs"
+        source "$wrapper"
+        break
+    fi
+done
 
 # Hack to make moving around virtualenvs easier
 # On cd, if a .venv file exists, workon the contents
