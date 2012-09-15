@@ -20,7 +20,6 @@ subtrees = [
     ('SearchComplete', 'http://github.com/vim-scripts/SearchComplete', 'home/vim/bundle/SearchComplete'),
     ('snipmate.vim', 'http://github.com/msanders/snipmate.vim', 'home/vim/bundle/snipmate.vim'),
     ('sudo.vim', 'http://github.com/vim-scripts/sudo.vim', 'home/vim/bundle/sudo.vim'),
-    ('supertab', 'http://github.com/ervandew/supertab', 'home/vim/bundle/supertab'),
     ('vim-surround', 'http://github.com/tpope/vim-surround', 'home/vim/bundle/vim-surround'),
     ('taglist.vim', 'http://github.com/vim-scripts/taglist.vim', 'home/vim/bundle/taglist.vim'),
 ]
