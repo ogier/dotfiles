@@ -26,9 +26,22 @@ link_absolute ()
     ln -v -s "$2" "$1"
 }
 
+unlink_absolute ()
+{
+    # only unlink if there's a symlink to $dotfiles
+    if [ -h "$1" -a "`readlink \"$1\"`" = "$2" ]; then
+        rm -v "$1"
+    fi
+}
+
 link_dotfile ()
 {
     link_absolute "$HOME/.$1" "$dotfiles/home/$1"
+}
+
+unlink_dotfile ()
+{
+    unlink_absolute "$HOME/.$1" "$dotfiles/home/$1"
 }
 
 link_children ()
@@ -40,6 +53,7 @@ link_children ()
 }
 
 
+
 # shells
 
 link_dotfile bash_profile
@@ -49,11 +63,9 @@ link_dotfile zshrc
 # vim
 
 link_dotfile vimrc
+link_dotfile vim/colors/molokai.vim
 mkdir -v -p "$HOME/.vim/tmp/backup/"
 mkdir -v -p "$HOME/.vim/tmp/swap/"
-for dir in "$dotfiles/home/vim/"*; do
-    link_children "$HOME/.vim/`basename $dir`" "$dir"
-done
 
 # tmux
 
@@ -71,3 +83,21 @@ link_dotfile hgrc
 # devilspie
 
 link_children "$HOME/.devilspie" "$dotfiles/home/devilspie"
+
+# legacy removals
+
+unlink_dotfile vim/autoload/pathogen.vim
+unlink_dotfile vim/bundle/ack.vim
+unlink_dotfile vim/bundle/ctrlp.vim
+unlink_dotfile vim/bundle/gundo.vim
+unlink_dotfile vim/bundle/NERD_commenter
+unlink_dotfile vim/bundle/nerdcommenter
+unlink_dotfile vim/bundle/nerdtree
+unlink_dotfile vim/bundle/SearchComplete
+unlink_dotfile vim/bundle/snipmate.vim
+unlink_dotfile vim/bundle/sudo.vim
+unlink_dotfile vim/bundle/supertab
+unlink_dotfile vim/bundle/taglist.vim
+unlink_dotfile vim/bundle/vim-scmdiff
+unlink_dotfile vim/bundle/vim-surround
+unlink_dotfile vim/bundle/vim-yankring
