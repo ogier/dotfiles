@@ -1,5 +1,8 @@
 set nocompatible
 
+" Load plugins via Vundle
+source ~/.vimrc.plugins
+
 " Security
 set modelines=0
 
@@ -134,12 +137,3 @@ nnoremap , ;
 nnoremap <leader>k :set langmap=nj,ek,kn,je<cr>
 nnoremap <leader>n :set langmap=<cr>
 set langmap=nj,ek,kn,je
-
-" Plugin configuration with Vundle
-filetype off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-
-Bundle 'gmarik/vundle'
-
-filetype plugin indent on

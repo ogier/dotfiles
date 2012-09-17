@@ -63,7 +63,7 @@ link_dotfile zshrc
 # vim
 
 link_dotfile vimrc
-link_dotfile vim/colors/molokai.vim
+link_dotfile vimrc.plugins
 mkdir -v -p "$HOME/.vim/tmp/backup/"
 mkdir -v -p "$HOME/.vim/tmp/swap/"
 
@@ -87,6 +87,7 @@ link_children "$HOME/.devilspie" "$dotfiles/home/devilspie"
 # legacy removals
 
 unlink_dotfile vim/autoload/pathogen.vim
+unlink_dotfile vim/colors/molokai.vim
 unlink_dotfile vim/bundle/ack.vim
 unlink_dotfile vim/bundle/ctrlp.vim
 unlink_dotfile vim/bundle/gundo.vim
