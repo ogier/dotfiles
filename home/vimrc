@@ -1,14 +1,5 @@
 set nocompatible
 
-" vundle plugin config
-filetype off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-
-Bundle 'gmarik/vundle'
-
-filetype plugin indent on
-
 " Security
 set modelines=0
 
@@ -142,3 +133,12 @@ nnoremap , ;
 " For colemak users
 nnoremap <leader>k :set langmap=nj,ek,kn,je<cr>
 nnoremap <leader>n :set langmap=<cr>
+
+" Plugin configuration with Vundle
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+Bundle 'gmarik/vundle'
+
+filetype plugin indent on
