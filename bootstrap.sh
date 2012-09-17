@@ -1,51 +1,49 @@
 #!/bin/sh
 
 # find the parent directory of this script
-dotfiles=$(dirname $(readlink -f $0))
-[ ! -x "$dotfiles/bootstrap.sh" ] && exit 1
+dotfiles=$(dirname "$(readlink -e "$0")")
 
-link_absolute ()
+link_dotfile ()
 {
+    src="$dotfiles/home/$1"
+    dest="$HOME/.$1"
+
     # if there's already a proper link set up, do nothing
-    if [ -h "$1" -a "`readlink \"$1\"`" = "$2" ]; then
+    if [ -h "$dest" -a "$(readlink "$dest")" = "$src" ]; then
         return
     fi
 
     # ask before clobbering anything
-    if [ -f "$1" -o -d "$1" ]; then
+    if [ -f "$dest" -o -d "$dest" ]; then
         read -p "Clobber $1 ? " yn
         case "$yn" in
-            [Yy]* ) rm -r "$1"; break;;
-            * ) echo "Skipping $1"; return;;
+            [Yy]* ) rm -r "$dest"; break;;
+            * ) echo "Skipping $dest"; return;;
         esac
     fi
 
-    ln -v -s "$2" "$1"
-}
-
-unlink_absolute ()
-{
-    # only unlink if there's a symlink to $dotfiles
-    if [ -h "$1" -a "`readlink \"$1\"`" = "$2" ]; then
-        rm -v "$1"
-    fi
-}
-
-link_dotfile ()
-{
-    link_absolute "$HOME/.$1" "$dotfiles/home/$1"
+    ln -v -s "$src" "$dest"
 }
 
 unlink_dotfile ()
 {
-    unlink_absolute "$HOME/.$1" "$dotfiles/home/$1"
+    src="$dotfiles/home/$1"
+    dest="$HOME/.$1"
+
+    # only unlink if there's a symlink to $dotfiles
+    if [ -h "$dest" -a "$(readlink "$dest")" = "$src" ]; then
+        rm -v "$dest"
+    fi
 }
 
 link_children ()
 {
-    mkdir -v -p "$1"
-    for child in "$2/"*; do
-        link_absolute "$1/`basename $child`" "$child"
+    src="$dotfiles/home/$1"
+    dest="$HOME/.$1"
+
+    mkdir -v -p "$dest"
+    for child in "$src/"*; do
+        link_dotfile "$1/$(basename "$child")"
     done
 }
 
@@ -79,7 +77,7 @@ link_dotfile hgrc
 
 # devilspie
 
-link_children "$HOME/.devilspie" "$dotfiles/home/devilspie"
+link_children devilspie
 
 # legacy removals
 
