@@ -8,4 +8,19 @@ Bundle 'gmarik/vundle'
 " Colorscheme
 Bundle 'molokai'
 
+" From git
+Bundle 'mileszs/ack.vim'
+Bundle 'kien/ctrlp.vim'
+Bundle 'sjl/gundo.vim'
+Bundle 'scrooloose/nerdcommenter'
+Bundle 'scrooloose/nerdtree'
+Bundle 'ghewgill/vim-scmdiff'
+Bundle 'msanders/snipmate.vim'
+Bundle 'tpope/vim-surround'
+
+" From vim.org
+Bundle 'SearchComplete'
+Bundle 'sudo.vim'
+Bundle 'taglist.vim'
+
 filetype plugin indent on
