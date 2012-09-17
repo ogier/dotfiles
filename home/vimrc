@@ -50,9 +50,6 @@ set showmatch
 set hlsearch
 set gdefault
 map <leader><space> :noh<cr>
-runtime macros/matchit.vim
-nmap <tab> %
-vmap <tab> %
 
 " Status line
 set laststatus=2
