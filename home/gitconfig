@@ -19,9 +19,9 @@
     new = green bold
 
 [color "status"]
-    added = yellow
-    changed = green
-    untracked = cyan
+    added = yellow bold
+    changed = green bold
+    untracked = cyan bold
 
 [diff]
 	renames = copies
