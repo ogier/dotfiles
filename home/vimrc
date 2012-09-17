@@ -133,6 +133,7 @@ nnoremap , ;
 " For colemak users
 nnoremap <leader>k :set langmap=nj,ek,kn,je<cr>
 nnoremap <leader>n :set langmap=<cr>
+set langmap=nj,ek,kn,je
 
 " Plugin configuration with Vundle
 filetype off
