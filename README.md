@@ -1,22 +1,23 @@
-Setting up
-==========
+Installation
+============
 
-Check out by running 
-`git clone http://github.com/ogier/dotfiles ~/dotfiles --recursive`
-or running `git submodule update --init` after cloning.
+    git clone http://github.com/ogier/dotfiles
+    ./dotfiles/bootstrap.sh
 
-Then run `~/dotfiles/bootstrap.sh`. This will add a bunch of symlinks
-from your home directory to `~/dotfiles/home`. The bootstrapper is very
-paranoid, it will ask for confirmation before deleting any existing files
-so it is safe to run even if you have local changes you want to keep.
+Explanation
+===========
 
-It is assumed that this repository was checked out to
-`~/dotfiles`. I may add more customizability if it turns out to be helpful.
+The bootstrap script that is included will synchronize your home directory with
+the `home/` directory from dotfiles by symlinking any relevant files.
+The bootstrapper is very cautious. It will ask for confirmation before
+changing any unrecognized file or symlink so it is safe to run even if
+you have local changes you want to keep.
 
-Recap
------
+Because `~/.gitconfig` includes personal information and is unable to use
+paths that are relative to the home directory, you will probably have to
+manually edit that file before it is useful.
 
-    git clone http://github.com/ogier/dotfiles ~/dotfiles --recursive
-    ~/dotfiles/bootstrap.sh
-
-That's it.
+Vim plugins are managed via Vundle in the file `~/.vimrc.plugins`. The first
+time you run vim, you may find that the colorscheme is missing and some errors
+may be displayed. Running `:BundleInstall` from within vim should fix these
+for the next time you open vim.

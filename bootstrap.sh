@@ -1,11 +1,8 @@
 #!/bin/sh
 
-# optionally specify an alternate repository location as the first argument
-if [ -z "$1" ]; then
-    dotfiles="$HOME/dotfiles"
-else
-    dotfiles="$1"
-fi
+# find the parent directory of this script
+dotfiles=$(dirname $(readlink -f $0))
+[ ! -x "$dotfiles/bootstrap.sh" ] && exit 1
 
 link_absolute ()
 {
