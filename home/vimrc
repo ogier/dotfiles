@@ -1,10 +1,13 @@
-" use pathogen to keep vim scripts bundled
-filetype off
-call pathogen#infect()
-call pathogen#helptags()
-filetype plugin indent on
-
 set nocompatible
+
+" vundle plugin config
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+Bundle 'gmarik/vundle'
+
+filetype plugin indent on
 
 " Security
 set modelines=0
