@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# find the parent directory of this script
-dotfiles=$(dirname "$(readlink -e "$0")")
+# Find the parent directory of this script
+dotfiles="$(dirname "$(readlink -e "$0")")"
 
 link_dotfile ()
 {
@@ -30,57 +30,28 @@ unlink_dotfile ()
     src="$dotfiles/home/$1"
     dest="$HOME/.$1"
 
-    # only unlink if there's a symlink to $dotfiles
+    # only unlink if there's a symlink and it points to us
     if [ -h "$dest" -a "$(readlink "$dest")" = "$src" ]; then
         rm -v "$dest"
     fi
 }
 
-link_children ()
-{
-    src="$dotfiles/home/$1"
-    dest="$HOME/.$1"
+# Link all dotfiles in the home/ directory
+for dotfile in "$dotfiles/home/"*; do
+    link_dotfile "${dotfile#$dotfiles/home/}"
+done
 
-    mkdir -v -p "$dest"
-    for child in "$src/"*; do
-        link_dotfile "$1/$(basename "$child")"
-    done
-}
-
-
-
-# shells
-
-link_dotfile bash_profile
-link_dotfile bashrc
-link_dotfile zshrc
-
-# vim
-
-link_dotfile vimrc
-link_dotfile vimrc.plugins
+# Do some first time initialization for vim
 mkdir -v -p "$HOME/.vim/tmp/backup/"
 mkdir -v -p "$HOME/.vim/tmp/swap/"
 
-# tmux
+# Clone vundle if there's not already a repo there
+if [ ! -d "$HOME/.vim/bundle/vundle" ]; then
+    git clone https://github.com/gmarik/vundle "$HOME/.vim/bundle/vundle"
+fi
 
-link_dotfile tmux.conf
-
-# git
-
-link_dotfile gitconfig
-link_dotfile gitignore
-
-# hg
-
-link_dotfile hgrc
-
-# devilspie
-
-link_children devilspie
-
-# legacy removals
-
+# Unlink some legacy files (files that used to be managed)
+unlink_dotfile devilspie/terminal.ds
 unlink_dotfile vim/autoload/pathogen.vim
 unlink_dotfile vim/colors/molokai.vim
 unlink_dotfile vim/bundle/ack.vim

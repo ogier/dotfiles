@@ -1,3 +1,0 @@
-(if
-    (is (application_name) "Terminal")
-    (maximize))
