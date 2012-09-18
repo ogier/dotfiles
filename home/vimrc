@@ -7,29 +7,29 @@ source ~/.vimrc.plugins
 set modelines=0
 
 " Tabs/spaces
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
-set expandtab
+set tabstop=4                     " width of a tab
+set shiftwidth=0                  " width for autoindent (0 means use tabstop)
+set softtabstop=4                 " number of spaces inserted by <Tab>
+set expandtab                     " convert tabs to spaces as they are typed
+set autoindent                    " keep indent from previous line
 
 " Basic options
-set encoding=utf-8
-set scrolloff=3
-set autoindent
-set showmode
-set showcmd
-set hidden
-set wildmenu
-set wildmode=list:longest
-set visualbell
-set cursorline
-set ttyfast
-set ruler
-set backspace=indent,eol,start
+set encoding=utf-8                " sane default for the modern world
+set scrolloff=8                   " keep 8+ lines above and below cursor
+set showmode                      " show mode below status line
+set showcmd                       " show commands as they are typed
+set hidden                        " allow hidden buffers
+set wildmenu                      " tab-complete on the commandline
+set wildmode=list:longest         " list all completions, fill in common prefix
+set visualbell                    " flash instead of beeping
+set cursorline                    " highlight the line with the cursor on it
+set ttyfast                       " redraw more, smoother in corner cases
+set ruler                         " show cursor position (overridden by statusline)
+set backspace=indent,eol,start    " backspace over linebreaks and indentation
 if version >= 703
-    set relativenumber
-    set colorcolumn=81
-    "set undofile
+    set relativenumber                " number lines relative to the cursor
+    set colorcolumn=81                " highlight after the 80th column
+    "set undofile                      " save undo history for each file
 endif
 
 " Backups
@@ -38,14 +38,11 @@ set directory=~/.vim/tmp/swap//   " swap files
 set backup                        " enable backups
 
 " Searching
-nnoremap / /\v
-vnoremap / /\v
-set ignorecase
-set smartcase
-set incsearch
-set showmatch
-set hlsearch
-set gdefault
+set smartcase                     " case-insensitive if search is all lowercase
+set incsearch                     " jump to search results as you type
+set hlsearch                      " highlight all matches from search
+set gdefault                      " match all results on each line by default
+set showmatch                     " highlight matching braces/parens
 map <leader><space> :noh<cr>
 
 " Status line
@@ -67,12 +64,37 @@ set background=dark
 set t_Co=256
 colorscheme molokai
 
+" For colemak users
+nnoremap <leader>k :set langmap=nj,ek,kn,je<cr>
+nnoremap <leader>n :set langmap=<cr>
+set langmap=nj,ek,kn,je
+
+" Paste without autoindent
+set pastetoggle=<leader>p
+
+" Don't require the shift key to get a colon
+nnoremap ; :
+nnoremap , ;
+
 " NERD Tree
 map <F2> :NERDTreeToggle<cr>
 let NERDTreeIgnore=['.vim$', '\~$', '.*\.pyc$', 'pip-log\.txt$']
 
-" Nice pasting
-set pastetoggle=<leader>p
+" TagList
+nnoremap <leader>g :TlistToggle<cr>
+
+" LatexSuite
+let g:Tex_DefaultTargetFormat='pdf'
+let g:Imap_UsePlaceHolders=0
+
+" Gundo
+nnoremap <leader>u :GundoToggle<cr>
+
+" Edit .vimrc
+nnoremap <leader>ev :e $MYVIMRC<cr>
+
+" Write with sudo
+cmap w!! w !sudo tee % >/dev/null
 
 " Guess the tab format of the current file
 function! GuessExpandTab()
@@ -113,28 +135,3 @@ au BufWinEnter * call SetExtraWhitespace()
 au BufWinLeave * call clearmatches()
 au InsertEnter * call clearmatches()
 au InsertLeave * call SetExtraWhitespace()
-
-" TagList
-nnoremap <leader>t :TlistToggle<cr>
-
-" LatexSuite
-let g:Tex_DefaultTargetFormat='pdf'
-let g:Imap_UsePlaceHolders=0
-
-" Gundo
-nnoremap <leader>u :GundoToggle<cr>
-
-" Edit .vimrc
-nnoremap <leader>ev :e $MYVIMRC<cr>
-
-" Sudo to write
-cmap w!! w !sudo tee % >/dev/null
-
-" Shouldn't need shift
-nnoremap ; :
-nnoremap , ;
-
-" For colemak users
-nnoremap <leader>k :set langmap=nj,ek,kn,je<cr>
-nnoremap <leader>n :set langmap=<cr>
-set langmap=nj,ek,kn,je
