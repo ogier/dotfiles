@@ -36,15 +36,35 @@ unlink_dotfile ()
     fi
 }
 
-# Link all dotfiles in the home/ directory
-for dotfile in "$dotfiles/home/"*; do
-    link_dotfile "${dotfile#$dotfiles/home/}"
-done
+# bash
 
+link_dotfile bashrc
+link_dotfile bash_profile
+
+# zsh
+
+link_dotfile zshrc
+
+# git
+
+link_dotfile gitconfig
+link_dotfile gitignore
+
+# hg
+
+link_dotfile hgrc
+
+# tmux
+
+link_dotfile tmux.conf
+
+# vim
+
+link_dotfile vimrc
+link_dotfile vimrc.plugins
 # Do some first time initialization for vim
 mkdir -v -p "$HOME/.vim/tmp/backup/"
 mkdir -v -p "$HOME/.vim/tmp/swap/"
-
 # Clone vundle if there's not already a repo there
 if [ ! -d "$HOME/.vim/bundle/vundle" ]; then
     git clone https://github.com/gmarik/vundle "$HOME/.vim/bundle/vundle"
