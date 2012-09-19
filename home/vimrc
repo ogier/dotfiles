@@ -8,7 +8,7 @@ set modelines=0
 
 " Tabs/spaces
 set tabstop=4                     " width of a tab
-set shiftwidth=0                  " width for autoindent (0 means use tabstop)
+set shiftwidth=4                  " width for autoindent
 set softtabstop=4                 " number of spaces inserted by <Tab>
 set expandtab                     " convert tabs to spaces as they are typed
 set autoindent                    " keep indent from previous line
@@ -40,9 +40,10 @@ set backup                        " enable backups
 " Searching
 set smartcase                     " case-insensitive if search is all lowercase
 set incsearch                     " jump to search results as you type
-set hlsearch                      " highlight all matches from search
 set gdefault                      " match all results on each line by default
 set showmatch                     " highlight matching braces/parens
+set hlsearch                      " highlight all matches from search
+                                  " <leader><space> clears this
 map <leader><space> :noh<cr>
 
 " Status line
@@ -67,7 +68,7 @@ colorscheme molokai
 " For colemak users
 nnoremap <leader>k :set langmap=nj,ek,kn,je<cr>
 nnoremap <leader>n :set langmap=<cr>
-set langmap=nj,ek,kn,je
+set langmap=nj,ek,kn,je           " swap some keys to make navigation easier
 
 " Paste without autoindent
 set pastetoggle=<leader>p
