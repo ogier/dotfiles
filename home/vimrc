@@ -65,11 +65,6 @@ set background=dark
 set t_Co=256
 colorscheme molokai
 
-" For colemak users
-nnoremap <leader>k :set langmap=nj,ek,kn,je<cr>
-nnoremap <leader>n :set langmap=<cr>
-set langmap=nj,ek,kn,je           " swap some keys to make navigation easier
-
 " Paste without autoindent
 set pastetoggle=<leader>p
 
@@ -97,6 +92,10 @@ nnoremap <leader>ev :e $MYVIMRC<cr>
 " Write with sudo
 cmap w!! w !sudo tee % >/dev/null
 
+" For colemak users
+nnoremap <leader>k :set langmap=nj,ek,kn,je<cr>
+nnoremap <leader>n :set langmap=<cr>
+set langmap=nj,ek,kn,je           " swap some keys to make navigation easier
 
 au BufReadPost * :DetectIndent
 let g:detectindent_preferred_expandtab=1
