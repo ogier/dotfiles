@@ -43,7 +43,7 @@ set incsearch                     " jump to search results as you type
 set gdefault                      " match all results on each line by default
 set showmatch                     " highlight matching braces/parens
 set hlsearch                      " highlight all matches from search
-                                  " <leader><space> clears this
+                                  " <leader><space> clears highlights
 map <leader><space> :noh<cr>
 
 " Status line
@@ -117,9 +117,13 @@ au BufNewFile,BufRead *.m{ark,}d{own,} nnoremap <leader>1 yypVr=
 au BufNewFile,BufRead *.m{ark,}d{own,} nnoremap <leader>2 yypVr-
 au BufNewFile,BufRead *.m{ark,}d{own,} nnoremap <leader>3 I### <ESC>
 
-au BufNewFile,BufRead *.{s,}ml set tabstop=2
-au BufNewFile,BufRead *.{s,}ml set shiftwidth=2
-au BufNewFile,BufRead *.{s,}ml set softtabstop=2
+au BufNewFile,BufRead *.{ht,s,}ml set tabstop=2
+au BufNewFile,BufRead *.{ht,s,}ml set shiftwidth=2
+au BufNewFile,BufRead *.{ht,s,}ml set softtabstop=2
+
+au BufNewFile,BufRead *.{cs,j}s set tabstop=2
+au BufNewFile,BufRead *.{cs,j}s set shiftwidth=2
+au BufNewFile,BufRead *.{cs,j}s set softtabstop=2
 
 au BufNewFile,BufRead *.go set noexpandtab
 
