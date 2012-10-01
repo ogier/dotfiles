@@ -11,6 +11,7 @@ Bundle 'molokai'
 " From git
 Bundle 'mileszs/ack.vim'
 Bundle 'kien/ctrlp.vim'
+Bundle 'ogier/detectindent'
 Bundle 'sjl/gundo.vim'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'

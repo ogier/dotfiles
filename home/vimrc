@@ -52,7 +52,7 @@ set statusline=%-.40f\                  " filename
 set statusline+=%y\                     " syntax type
 set statusline+=[%{&ff},%{&fenc},       " file settings
 set statusline+=%{&et?'spaces':'tabs'}, " expand tabs?
-set statusline+=%{&ts}]\                " tabstop width
+set statusline+=%{&sw}]\                " indent width
 set statusline+=%h%r%w%m                " flags
 set statusline+=%=                      " right align
 set statusline+=%{synIDattr(synID(line('.'),col('.'),1),'name')}\  " current syntax element
@@ -97,17 +97,9 @@ nnoremap <leader>ev :e $MYVIMRC<cr>
 " Write with sudo
 cmap w!! w !sudo tee % >/dev/null
 
-" Guess the tab format of the current file
-function! GuessExpandTab()
-    let nspaces = len(filter(getline(0, "$"), 'match(v:val, " ") == 0'))
-    let ntabs = len(filter(getline(0, "$"), 'match(v:val, "\t") == 0'))
-    if ntabs > nspaces
-        set noexpandtab
-    endif
-endfunction
 
-" Guess tab format here, override after
-au BufRead * call GuessExpandTab()
+au BufReadPost * :DetectIndent
+let g:detectindent_preferred_expandtab=1
 
 au BufRead,BufNewFile *.less set filetype=css
 au BufRead,BufNewFile *.scss set filetype=scss
@@ -117,13 +109,8 @@ au BufNewFile,BufRead *.m{ark,}d{own,} nnoremap <leader>1 yypVr=
 au BufNewFile,BufRead *.m{ark,}d{own,} nnoremap <leader>2 yypVr-
 au BufNewFile,BufRead *.m{ark,}d{own,} nnoremap <leader>3 I### <ESC>
 
-au BufNewFile,BufRead *.{ht,s,}ml set tabstop=2
-au BufNewFile,BufRead *.{ht,s,}ml set shiftwidth=2
-au BufNewFile,BufRead *.{ht,s,}ml set softtabstop=2
-
-au BufNewFile,BufRead *.{cs,j}s set tabstop=2
-au BufNewFile,BufRead *.{cs,j}s set shiftwidth=2
-au BufNewFile,BufRead *.{cs,j}s set softtabstop=2
+au BufNewFile,BufRead *.{s,}ml set shiftwidth=2
+au BufNewFile,BufRead *.{s,}ml set softtabstop=2
 
 au BufNewFile,BufRead *.go set noexpandtab
 
