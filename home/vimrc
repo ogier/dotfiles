@@ -120,9 +120,9 @@ au BufNewFile,BufRead *.go set noexpandtab
 highlight ExtraWhitespace ctermbg=darkgrey guibg=darkgrey
 function! SetExtraWhitespace()
     if &expandtab
-        match ExtraWhitespace /^\t+\|\s\+$/
+        match ExtraWhitespace /^\t\+\|\s\+$/
     else
-        match ExtraWhitespace /^ +\|\s\+$/
+        match ExtraWhitespace /^ \+\|\s\+$/
     endif
 endfunction
 au BufWinEnter * call SetExtraWhitespace()
