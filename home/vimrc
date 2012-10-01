@@ -65,6 +65,9 @@ set background=dark
 set t_Co=256
 colorscheme molokai
 
+" GUI specific
+set guioptions-=T                 " hide toolbar
+
 " Paste without autoindent
 set pastetoggle=<leader>p
 
