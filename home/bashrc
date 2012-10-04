@@ -23,6 +23,9 @@ alias tmux="TERM=screen-256color-bce tmux"
 # Use pacmatic as pacman client where possible
 which pacmatic &>/dev/null && export PACMAN=$(which pacmatic)
 
+# Prefer gvim as text editor
+which gvim &>/dev/null && export VISUAL="gvim -f"
+
 # Use virtualenv where possible
 wrappers=(
     /usr/bin/virtualenvwrapper_lazy.sh
