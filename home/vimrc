@@ -100,8 +100,7 @@ nnoremap <leader>k :set langmap=nj,ek,kn,je<cr>
 nnoremap <leader>n :set langmap=<cr>
 set langmap=nj,ek,kn,je           " swap some keys to make navigation easier
 
-au BufReadPost * :DetectIndent
-let g:detectindent_preferred_expandtab=1
+au BufReadPost * :GuessIndent
 
 au BufRead,BufNewFile *.less set filetype=css
 au BufRead,BufNewFile *.scss set filetype=scss
