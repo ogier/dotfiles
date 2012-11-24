@@ -26,3 +26,6 @@
 
 [diff]
     renames = copies
+
+[push]
+    default = simple
