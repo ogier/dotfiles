@@ -21,10 +21,10 @@ alias tmux="TERM=screen-256color-bce tmux"
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # Use pacmatic as pacman client where possible
-which pacmatic &>/dev/null && export PACMAN=$(which pacmatic)
+which pacmatic &>/dev/null && export PACMAN="$(which pacmatic)"
 
-# Prefer gvim as text editor
-which gvim &>/dev/null && export VISUAL="gvim -f"
+# Prefer vim as text editor
+which vim &>/dev/null && export VISUAL="vim"
 
 # Use virtualenv where possible
 wrappers=(
