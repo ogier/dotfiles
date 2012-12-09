@@ -9,9 +9,8 @@ export PATH=$HOME/bin:$PATH
 alias grep="grep --color=auto"
 alias fgrep="fgrep --color=auto"
 alias egrep="egrep --color=auto"
-alias l="ls -CF"
-alias ls="ls --color=auto"
-alias la="ls --color=auto -A"
+alias l="ls --color=auto -CF"
+alias la="ls --color=auto -ACF"
 alias ll="ls --color=auto -al"
 
 # tmux needs special help with coloring
