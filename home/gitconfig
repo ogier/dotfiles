@@ -5,6 +5,7 @@
 [alias]
     l = log --oneline --decorate
     d = diff --color-words
+    s = status --short --branch
 
 [core]
     excludesfile = /home/aogier/.gitignore
