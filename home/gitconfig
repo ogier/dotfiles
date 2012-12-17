@@ -28,4 +28,4 @@
     renames = copies
 
 [push]
-    default = simple
+    default = tracking
