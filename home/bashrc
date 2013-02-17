@@ -58,5 +58,7 @@ add_readline () {
 alias rl="add_readline"
 
 # Use ~/go for local go packages
-export GOPATH=$HOME/go
-export PATH=$GOPATH/bin:$PATH
+if which go &>/dev/null; then
+    export GOPATH="$HOME/go"
+    export PATH="$GOPATH/bin:$PATH"
+fi
