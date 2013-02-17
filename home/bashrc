@@ -48,6 +48,9 @@ if [ -d "$HOME/.rbenv" ]; then
     eval "$(rbenv init -)"
 fi
 
+# Add local gems to path
+which gem &>/dev/null && export PATH="$HOME/.gem/ruby/1.9.1/bin:$PATH"
+
 # Add readline support to programs
 add_readline () {
     socat READLINE EXEC:$1
