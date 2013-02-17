@@ -25,7 +25,7 @@ which pacmatic &>/dev/null && export PACMAN="$(which pacmatic)"
 # Prefer vim as text editor
 which vim &>/dev/null && export VISUAL="vim"
 
-# Use virtualenv where possible
+# Use virtualenvwrapper where possible
 wrappers=(
     /usr/bin/virtualenvwrapper_lazy.sh
     /usr/bin/virtualenvwrapper.sh
@@ -38,21 +38,6 @@ for wrapper in "${wrappers[@]}"; do
         break
     fi
 done
-
-# Hack to make moving around virtualenvs easier
-# On cd, if a .venv file exists, workon the contents
-has_virtualenv() {
-    if [[ -e .venv && ! -z $WORKON_HOME ]]; then
-        CURRENT_VENV=$WORKON_HOME/`cat .venv`
-        if [ "$CURRENT_VENV" != "$VIRTUAL_ENV" ]; then
-            workon `cat .venv`
-        fi
-    fi
-}
-venv_cd () {
-    cd "$@" && has_virtualenv
-}
-alias cd="venv_cd"
 
 # Start rvm when possible
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
