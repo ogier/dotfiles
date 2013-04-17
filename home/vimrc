@@ -75,6 +75,10 @@ set pastetoggle=<leader>p
 nnoremap ; :
 nnoremap , ;
 
+" Run :DiffOrig to compare a recovered vim swapfile to the original on disk
+" Works great with the 'cleanswap' shell command from ~/.bashrc
+command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis
+
 " NERD Tree
 map <F2> :NERDTreeToggle<cr>
 let NERDTreeIgnore=['.vim$', '\~$', '.*\.pyc$', 'pip-log\.txt$']

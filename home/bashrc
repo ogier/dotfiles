@@ -25,6 +25,25 @@ which pacmatic &>/dev/null && export PACMAN="$(which pacmatic)"
 # Prefer vim as text editor
 which vim &>/dev/null && export VISUAL="vim"
 
+# Script to help recover and cleanup lost vim files
+# Depends on a DiffOrig command defined in ~/.vimrc
+cleanswap () {
+    swap_files=`find "$HOME/.vim/tmp/swap" -name "*.swp"`
+
+    for swap_file in $swap_files ; do
+        orig_file=`echo $swap_file | perl -pe 's!/\.([^/]*).swp$!/$1!'`
+        echo "Editing $orig_file"
+        sleep 1
+        vim -r "$orig_file" -c "DiffOrig"
+        echo -n "  Ok to delete swap file? [y/n] "
+        read resp
+        if [ "$resp" = "y" ] ; then
+            echo "  Deleting $swap_file"
+            rm "$swap_file"
+        fi
+    done
+}
+
 # Use virtualenvwrapper where possible
 wrappers=(
     /usr/bin/virtualenvwrapper_lazy.sh
