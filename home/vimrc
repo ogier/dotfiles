@@ -106,11 +106,6 @@ nnoremap <leader>ev :e $MYVIMRC<cr>
 " Write with sudo
 cmap w!! w !sudo tee % >/dev/null
 
-" For colemak users
-nnoremap <leader>k :set langmap=nj,ek,kn,je<cr>
-nnoremap <leader>n :set langmap=<cr>
-set langmap=nj,ek,kn,je           " swap some keys to make navigation easier
-
 au BufReadPost * :GuessIndent
 
 au BufRead,BufNewFile *.less set filetype=css
