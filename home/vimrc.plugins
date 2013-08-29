@@ -17,10 +17,10 @@ Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
 Bundle 'ghewgill/vim-scmdiff'
 Bundle 'tpope/vim-surround'
-Bundle 'davidoc/taskpaper.vim'
+Bundle 'Shougo/vimproc.vim'
+Bundle 'Shougo/unite.vim'
 
 " From vim.org
-Bundle 'SearchComplete'
 Bundle 'sudo.vim'
 Bundle 'SuperTab'
 Bundle 'taglist.vim'
