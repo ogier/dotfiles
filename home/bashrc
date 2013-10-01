@@ -2,8 +2,6 @@
 # of special characters.
 export PS1='[\[\e[0;36m\]\u\[\e[0;37m\]@\[\e[0;35m\]\h \[\e[0;34m\]\w\[\e[00m\]] '
 
-# Miscellaneous user binaries
-export PATH=$HOME/bin:$PATH
 
 # Create aliases for commonly used commands.-
 alias grep="grep --color=auto"
