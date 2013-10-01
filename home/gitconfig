@@ -6,6 +6,7 @@
     l = log --oneline --decorate
     d = diff --color-words
     s = status --short --branch
+    ss = submodule foreach "git s && git l origin/master.."
 
 [core]
     excludesfile = /home/aogier/.gitignore
