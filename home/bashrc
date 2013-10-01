@@ -23,10 +23,13 @@ which pacmatic &>/dev/null && export PACMAN="$(which pacmatic)"
 # Prefer vim as text editor
 which vim &>/dev/null && export VISUAL="vim"
 
+# Prefer vimx (with X11 clipboard) when available
+which vimx &>/dev/null && alias vim="vimx"
+
 # Script to help recover and cleanup lost vim files
 # Depends on a DiffOrig command defined in ~/.vimrc
 cleanswap () {
-    swap_files=`find "$HOME/.vim/tmp/swap" -name "*.swp"`
+    swap_files=($(find "$HOME/.vim/tmp/swap" -name "*.swp"))
 
     for swap_file in $swap_files ; do
         orig_file=`echo $swap_file | perl -pe 's!/\.([^/]*).swp$!/$1!'`

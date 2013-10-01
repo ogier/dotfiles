@@ -68,6 +68,15 @@ colorscheme molokai
 " GUI specific
 set guioptions-=T                 " hide toolbar
 
+" Unite
+let g:unite_source_history_yank_enable = 1
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+nnoremap <leader>p :<C-u>Unite -no-split -buffer-name=files -start-insert file_rec/async:!<cr>
+nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files -start-insert file<cr>
+nnoremap <leader>r :<C-u>Unite -no-split -buffer-name=mru -start-insert file_mru<cr>
+nnoremap <leader>y :<C-u>Unite -no-split -buffer-name=yank -start-insert history/yank<cr>
+nnoremap <leader>b :<C-u>Unite -no-split -buffer-name=buffer -quick-match buffer<cr>
+
 " Paste without autoindent
 set pastetoggle=<leader>p
 
@@ -78,13 +87,6 @@ nnoremap , ;
 " Run :DiffOrig to compare a recovered vim swapfile to the original on disk
 " Works great with the 'cleanswap' shell command from ~/.bashrc
 command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis
-
-" Unite
-let g:unite_source_history_yank_enable = 1
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-nnoremap <leader>p :Unite -no-split -start-insert file_rec/async<cr>
-nnoremap <leader>/ :Unite -no-split -start-insert grep:.<cr>
-nnoremap <leader>y :Unite -quick-match history/yank<cr>
 
 " NERD Tree
 map <F2> :NERDTreeToggle<cr>
