@@ -12,7 +12,7 @@ alias la="ls --color=auto -ACF"
 alias ll="ls --color=auto -al"
 
 # tmux needs special help with coloring
-alias tmux="TERM=screen-256color-bce tmux"
+alias tmux="TERM=screen-256color tmux"
 
 # Make less more friendly for non-text input files, see lesspipe(1)
 which lesspipe &>/dev/null && eval "$(SHELL=/bin/sh lesspipe)"
