@@ -1,7 +1,6 @@
 # Set the shell prompt.  See the bash man page for a description-
 # of special characters.
-export PS1='[\[\e[0;36m\]\u\[\e[0;37m\]@\[\e[0;35m\]\h \[\e[0;34m\]\w\[\e[00m\]] '
-
+export PS1='[\[\e[0;36m\]\u\[\e[0;37m\]@\[\e[0;35m\]\h \[\e[0;34m\]\w\[\e[00m\]]$ '
 
 # Create aliases for commonly used commands.-
 alias grep="grep --color=auto"

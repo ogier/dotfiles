@@ -68,10 +68,15 @@ colorscheme molokai
 " GUI specific
 set guioptions-=T                 " hide toolbar
 
+" YouCompleteMe
+nnoremap <leader>jj :YcmCompleter GoToImprecise<cr>
+nnoremap <leader>jd :YcmCompleter GoToDefinition<cr>
+nnoremap <leader>jc :YcmCompleter GoToDeclaration<cr>
+
 " Unite
 let g:unite_source_history_yank_enable = 1
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
-nnoremap <leader>p :<C-u>Unite -no-split -buffer-name=files -start-insert file_rec/async:!<cr>
+nnoremap <leader>t :<C-u>Unite -no-split -buffer-name=files -start-insert file_rec/async:!<cr>
 nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files -start-insert file<cr>
 nnoremap <leader>r :<C-u>Unite -no-split -buffer-name=mru -start-insert file_mru<cr>
 nnoremap <leader>y :<C-u>Unite -no-split -buffer-name=yank -start-insert history/yank<cr>
@@ -92,9 +97,6 @@ command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | di
 map <F2> :NERDTreeToggle<cr>
 let NERDTreeIgnore=['.vim$', '\~$', '.*\.pyc$', 'pip-log\.txt$']
 
-" TagList
-nnoremap <leader>g :TlistToggle<cr>
-
 " LatexSuite
 let g:Tex_DefaultTargetFormat='pdf'
 let g:Imap_UsePlaceHolders=0
@@ -107,6 +109,12 @@ nnoremap <leader>ev :e $MYVIMRC<cr>
 
 " Write with sudo
 cmap w!! w !sudo tee % >/dev/null
+
+" Indent settings
+nnoremap <leader>2 :set expandtab shiftwidth=2 tabstop=2 softtabstop=2<cr>
+nnoremap <leader>3 :set expandtab shiftwidth=3 tabstop=3 softtabstop=3<cr>
+nnoremap <leader>4 :set expandtab shiftwidth=4 tabstop=4 softtabstop=4<cr>
+nnoremap <leader><tab> :set noexpandtab shiftwidth=4 tabstop=4 softtabstop=4<cr>
 
 au BufReadPost * :GuessIndent
 
