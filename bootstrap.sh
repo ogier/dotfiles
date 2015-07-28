@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Find the parent directory of this script
-dotfiles="$(dirname "$(readlink -e "$0")")"
+dotfiles="$(cd "$(dirname "$0")" && pwd -P)"
 
 link_dotfile ()
 {
