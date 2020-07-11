@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Find the parent directory of this script
-dotfiles="$(cd "$(dirname "$0")" && pwd -P)"
+dotfiles="$(cd "$(dirname "$0")" && pwd)"
 
 link_dotfile ()
 {
@@ -66,8 +66,8 @@ link_dotfile vimrc.plugins
 mkdir -v -p "$HOME/.vim/tmp/backup/"
 mkdir -v -p "$HOME/.vim/tmp/swap/"
 # Clone vundle if there's not already a repo there
-if [ ! -d "$HOME/.vim/bundle/vundle" ]; then
-    git clone https://github.com/gmarik/vundle "$HOME/.vim/bundle/vundle"
+if [ ! -d "$HOME/.vim/bundle/Vundle.vim" ]; then
+    git clone https://github.com/VundleVim/Vundle.vim "$HOME/.vim/bundle/Vundle.vim"
 fi
 
 # Unlink some legacy files (files that used to be managed)
