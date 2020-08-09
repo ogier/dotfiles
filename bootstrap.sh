@@ -62,12 +62,18 @@ link_dotfile tmux.conf
 
 link_dotfile vimrc
 link_dotfile vimrc.plugins
+
 # Do some first time initialization for vim
 mkdir -v -p "$HOME/.vim/tmp/backup/"
 mkdir -v -p "$HOME/.vim/tmp/swap/"
 # Clone vundle if there's not already a repo there
 if [ ! -d "$HOME/.vim/bundle/Vundle.vim" ]; then
     git clone https://github.com/VundleVim/Vundle.vim "$HOME/.vim/bundle/Vundle.vim"
+fi
+
+# first time prezto for zsh
+if [ ! -d "$HOME/.zprezto" ]; then
+    git clone --recursive https://github.com/sorin-ionescu/prezto.git "$HOME/.zprezto"
 fi
 
 # Unlink some legacy files (files that used to be managed)

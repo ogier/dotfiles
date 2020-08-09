@@ -1,25 +1,7 @@
-setopt prompt_subst
-autoload -Uz vcs_info
-autoload -U compinit; compinit
-
 # Share some config
 source ~/.bashrc
 
-local return_code="%(?..%B%F{red}%? ↵%f%b)"
-# red if we are superuser
-local userhost="%(!.%F{red}.%F{green}%n@)%m%f"
-# basename in bold
-local directory='%F{cyan}${$(print -P "%~")/%${$(print -P "%~"):t}/}%B${$(print -P "%~"):t}%b%f'
-local vcs='${vcs_info_msg_0_}'
-
-zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' actionformats '%F{magenta}(%B%b%c%u%%b%F{magenta}-%a)%f '
-zstyle ':vcs_info:*' formats '%F{magenta}(%B%b%c%u%%b%F{magenta})%f '
-zstyle ':vcs_info:*' stagedstr '%F{yellow}±%f'
-zstyle ':vcs_info:*' unstagedstr '%F{red}✗%f'
-
-precmd () { vcs_info }
-
-PROMPT="${userhost} ${directory} ${vcs}%B»%b "
-RPROMPT="${return_code}"
-
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
