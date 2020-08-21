@@ -44,6 +44,7 @@ link_dotfile bash_profile
 # zsh
 
 link_dotfile zshrc
+link_dotfile zpreztorc
 
 # git
 
