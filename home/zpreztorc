@@ -13,7 +13,7 @@ zstyle ':prezto:load' pmodule \
   'history' \
   'directory' \
   'spectrum' \
-  'completion' \
+  'autosuggestions' \
   'prompt'
 
 # NOTE: 'utility' is disabled because it does nothing useful...
